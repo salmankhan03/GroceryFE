@@ -14,6 +14,10 @@ import ImageComponent from '../../components/ImageComponents/ImageComponents';
 
 import Slider from 'react-slick';
 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
 
 function HomeScreen() {
     const banners = [
@@ -26,22 +30,27 @@ function HomeScreen() {
         { id: 1, src: slider1, content: "Best ideas for dinner", label: "MEAT MENU", bgImages: SliderBG },
         { id: 2, src: slider2, content: "Get our marinated and ready to cooks meats today.", label: "BBQ READY!", bgImages: SliderBG }
     ]
-    const sliderData = [
-        { title: 'Slide 1', image: 'slide1.jpg' },
-        { title: 'Slide 2', image: 'slide2.jpg' },
-        { title: 'Slide 3', image: 'slide3.jpg' },
-        { title: 'Slide 4', image: 'slide4.jpg' }
+    const meatItems = [
+        { id: 1, name: 'Lamb' },
+        { id: 2, name: 'Rabbit' },
+        { id: 3, name: 'Specials' },
+        { id: 4, name: 'Pork' },
+        { id: 5, name: 'Beef' },
+        { id: 6, name: 'Chicken' },
     ];
 
 
-
-    const  settings = {
-        dots: true,
+    const settings = {
+        dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 1,
+        slidesToShow: 4,
         slidesToScroll: 1,
-      };
+        autoplay: true,
+        autoplaySpeed: 3000,
+        pauseOnHover: true
+    };
+
     return (
         <div className="">
             <div className="row" style={{ margin: 0 }}>
@@ -161,17 +170,14 @@ function HomeScreen() {
                             </div>
                         ))}
                     </div>
-                    <div className='row mt-5'>
-                        <div className="slider-container">
-                            <Slider {...settings}>
-                                {sliderData.map((item, index) => (
-                                    <div key={index}>
-                                        <h3>{item.title}</h3>
-                                        <img src={item.image} alt={item.title} />
-                                    </div>
-                                ))}
-                            </Slider>
-                        </div>
+                    <div className="container mt-5">
+                        <Slider {...settings} className="meat-slider">
+                            {meatItems.map((item) => (
+                                <div key={item.id} className="slider-item text-center">
+                                    <h3>{item.name}</h3>
+                                </div>
+                            ))}
+                        </Slider>
                     </div>
 
 
