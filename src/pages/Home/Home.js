@@ -1,281 +1,185 @@
-import React, { useEffect, useState } from 'react';
-import ProductListing from '../../components/ProductListingComponents/ProductListingComponents';
-import LeftSideBarComponents from '../../components/LeftSideBar/LeftSideBar';
-import ProductServices from '../../services/ProductServices';
-import { setProductList } from '../../redux/action/action';
-import { useDispatch } from 'react-redux';
-import NotFound from '../../components/NotFoundComponents/NotFoundComponents';
-import Loading from '../../components/LoadingComponents/LoadingComponents';
-import CategoryServices from '../../services/categoryService';
-import { setCategoryList } from '../../redux/action/category-action';
-import CustomPagination from '../../components/PaginationComponents/Pagination';
-import { setBrandList } from '../../redux/action/brand-action';
+import React, { useEffect, useRef, useState } from 'react';
+import slider1 from "../../assets/images/banner/h1-slider-bg.jpg";
+import slider2 from "../../assets/images/banner/h1-slider-bg-02.jpg";
+import SliderBG from "../../assets/images/banner/h1-slider-bg-01.png"
+import leftImage from "../../assets/images/H2-img-1.jpg"
+import rightImage from "../../assets/images/H2-img-2.jpg"
+import rightSide from "../../assets/images/H2-png-3.png"
+import wayTobuy1 from "../../assets/images/H2-img-7.jpg"
+import wayTobuy2 from "../../assets/images/H2-img-8.jpg"
+import wayTobuy3 from "../../assets/images/H2-img-9.jpg"
+import TestimonalImage from "../../assets/images/images.jpg"
+import SliderComponents from "../../components/SliderComponents/SliderComponents"
+import ImageComponent from '../../components/ImageComponents/ImageComponents';
+
+import Slider from 'react-slick';
+
 
 function HomeScreen() {
-    const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true)
-    const [page, setPage] = useState(1)
-    const [defaultLimit, setDefaultLimit] = useState(20)
-    const [productDisplayLimit, setProductDisplayLimit] = useState()
-    const [totalPages, setTotalPages] = useState()
-    const [totalItems, setTotalItems] = useState()
-    const [category, setCategory] = useState("")
-    const [searchText, setSearchText] = useState("")
-    const [sortedField, setSortedField] = useState("")
-    const [productsListData, setProductsListData] = useState();
-    const [categoriesData, setCategoriesData] = useState();
-    const [brandData, setBrandData] = useState();
-    const [selectedCategories, setSelectedCategories] = useState([]);
-    const [selectedBrands, setSelectedBrands] = useState([]);
-    const [filteredPrice, setFilteredPrice] = useState([0, 0]);
-    const [currentPage, setCurrentPage] = useState(1);
-    const [selectedOption, setSelectedOption] = useState();
-    const [selectedSortingOption, setSelectedSortingOption] = useState();
-    const [maxPrice, setMaxPrice] = useState()
+    const banners = [
+        { id: 1, src: wayTobuy1, alt: 'Banner 1', label: 'You Choose', content: 'Browse our selection, check out online, and pick up on your scheduled date at our store.', button_label: 'Shop Online' },
+        { id: 2, src: wayTobuy2, alt: 'Banner 3', label: 'We Deliver', content: 'You order ships for free, frozen for freshness and packed in an eco-friendly box.', button_label: 'See More' },
+        { id: 3, src: wayTobuy3, alt: 'Banner 3', label: 'You Enjoy!', content: 'High-quality meat delivered to your door means more time for amazing meals together.', button_label: 'Choose Your Plan' },
+        { id: 4, src: wayTobuy1, alt: 'Banner 4', label: 'You Choose', content: 'Browse our selection, check out online, and pick up on your scheduled date at our store.', button_label: 'Shop Online' },
+    ];
+    const slider = [
+        { id: 1, src: slider1, content: "Best ideas for dinner", label: "MEAT MENU", bgImages: SliderBG },
+        { id: 2, src: slider2, content: "Get our marinated and ready to cooks meats today.", label: "BBQ READY!", bgImages: SliderBG }
+    ]
+    const sliderData = [
+        { title: 'Slide 1', image: 'slide1.jpg' },
+        { title: 'Slide 2', image: 'slide2.jpg' },
+        { title: 'Slide 3', image: 'slide3.jpg' },
+        { title: 'Slide 4', image: 'slide4.jpg' }
+    ];
 
 
 
-    const handlePageChange = (newPage) => {
-        // Your logic to fetch and display data for the new page
-        setCurrentPage(newPage);
-    };
-
-
-    useEffect(() => {
-        getProductsList(selectedOption)
-     
-    }, [selectedOption,currentPage])
-
-
-
-    const [availabilityData, setAvailabilityData] = useState([
-        { id: 4, name: 'exclude-from-catalog' },
-        { id: 5, name: 'exclude-from-search' },
-        { id: 6, name: 'featured' },
-        { id: 7, name: 'outofstock' }
-    ]);
-    useEffect(() => {
-        getProductsList()
-        getCategoryList()
-        getBrandList()
-        getPriceFilter()
-
-    }, [])
-    useEffect(() => {
-        const getselectedBrands = brandData?.filter(brand => selectedBrands.includes(brand.id));
-        const selectedBrandNames = getselectedBrands?.map(brand => brand.name);
-        let obj = {};
-        if(selectedSortingOption){
-            obj.sort = { price: selectedSortingOption === "low" ? "asc" : "desc" };
-        }
-        let data = {
-            "category": selectedCategories,
-            "brands": selectedBrandNames,
-            // "price": filteredPrice[1] === null || filteredPrice[1] === undefined ? [0, JSON.parse(maxPrice)] :filteredPrice ,
-            "price": filteredPrice[1] === null || filteredPrice[1] === undefined
-                ? [0, maxPrice !== undefined ? JSON.parse(maxPrice) : 0]
-                : filteredPrice,
-                ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
-        }
-        // (selectedCategories.length > 0 || selectedBrands.length > 0) && filteredPrice !== null
-        if (data?.brands?.length > 0 || data?.category?.length > 0 || data?.price[1] !== 0) {
-            getfilterWiseProduct(data)
-            setProductsListData([])
-        } else {
-            setProductsListData([])
-            getProductsList()
-        }
-
-    }, [selectedCategories, selectedBrands, filteredPrice,selectedSortingOption])
-    function getBrandList() {
-        CategoryServices.getAllBrand({
-            page: page,
-            limit: defaultLimit,
-        }).then((resp) => {
-            // setLoading(false)
-            console.log(resp)
-            if (resp?.status_code === 200) {
-                console.log(resp.list.data)
-                dispatch(setBrandList([
-                    ...resp?.list?.data
-                ]))
-                setBrandData(resp?.list?.data)
-            }
-        }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
-
-    }
-
-    function getCategoryList() {
-        CategoryServices.getAllCategory({
-            page: page,
-            limit: defaultLimit,
-        }).then((resp) => {
-            // setLoading(false)
-            console.log(resp)
-            if (resp?.status_code === 200) {
-                dispatch(setCategoryList([
-                    ...resp?.tree?.data
-                ]))
-                setCategoriesData(resp?.tree?.data)
-            }
-        }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
-    }
-    async function getfilterWiseProduct(data) {
-        setLoading(true)
-        await ProductServices.getfilterWiseProducts(data).then((resp) => {
-            if (resp?.status_code === 200) {
-                console.log(resp)
-                // dispatch(setProductList({
-                //     ...resp?.list?.data
-                // }))
-                setProductsListData(resp?.list)
-                setTotalItems(resp?.list?.length)
-                setProductDisplayLimit(resp?.list?.length)
-                setCurrentPage(1)
-                setTimeout(() => {
-                    setLoading(false)
-                  }, 1000);
-            }
-            // setLoading(false)
-
-        }).catch((error) => {
-            setLoading(false)
-            console.log(error)
-        })
-
-
-    }
-    async function getProductsList(limit) {
-        console.log(limit)
-        await ProductServices.getAllProducts({
-            page: currentPage ? currentPage : page,
-            limit: limit ? limit : defaultLimit,
-        }).then((resp) => {
-            if (resp?.status_code === 200) {
-                dispatch(setProductList({
-                    ...resp?.list?.data
-                }))
-                setProductDisplayLimit(resp?.list?.per_page)
-                setProductsListData(resp?.list?.data)
-                setTotalPages(resp?.list?.last_page)
-                setTotalItems(resp?.list?.total)
-                setTimeout(() => {
-                    setLoading(false)
-                  }, 1000); 
-            }
-        }).catch((error) => {
-            setLoading(false)
-            console.log(error)
-        })
-    }
-    function getPriceFilter() {
-        ProductServices.getMaximumPrice().then((resp) => {
-            // setLoading(false)
-            if (resp?.status_code === 200) {
-                const roundedMaxPrice = Math.ceil(parseFloat(resp?.max_price))
-                setMaxPrice(roundedMaxPrice)
-            }
-        }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
-    }
-    const handleChange = (e) => {
-        setSelectedOption(e.target.value);
-        setCurrentPage(1)
-    };
-    const handleSortingChange = (e) => {
-        setSelectedSortingOption(e.target.value);
-    };
-
+    const  settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+      };
     return (
-        <div className="custom-header" >
-            <div className="">
-                <div className="row mt-3" style={{}}>
-                    <div className="col-md-3 sidebar_hide mt-2">
-                        <div className='m-2'>
-                            <LeftSideBarComponents
-                                categoriesData={categoriesData}
-                                brandData={brandData}
-                                availabilityData={availabilityData}
-                                selectedCategories={selectedCategories}
-                                setSelectedCategories={setSelectedCategories}
-                                selectedBrands={selectedBrands}
-                                setSelectedBrands={setSelectedBrands}
-                                filteredPrice={filteredPrice}
-                                setFilteredPrice={setFilteredPrice}
-                                maximumPrice={maxPrice}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-9 mt-2">
-                        <div className="row mb-5">
-                            <div className="col-md-6 col-xs-4 mt-1">
-                                <div>
-                                    Showing all {productsListData?.length} results
-                                    <span className='ml-2'>
-                                        <select
-                                            id="simpleDropdown"
-                                            value={selectedOption}
-                                            onChange={handleChange}
-                                            className='select-dropdown'
-                                        ><option defaultValue={20} >20</option>
-                                            <option value="12">12</option>
-                                            <option value="24">24</option>
-                                            <option value="36">36</option>
-                                        </select>
-                                    </span>
-                                </div>
-                            </div>
-                            <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
-                                <select
-                                    id="sortingDropdown"
-                                    value={selectedSortingOption}
-                                    onChange={handleSortingChange}
-                                    className='select-dropdown'
-                                >
-                                    {/* <option value="default-sorting">Default sorting</option> */}
-                                    <option value="low">Sort by price: low to high</option>
-                                    <option value="high">Sort by price: high to low</option>
-                                    {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
-                                    <option value="date-added-desc">Sort by Date Added (Desc)</option> */}
-                                    {/* <option value="sort-by-latest">Sort by latest</option> */}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="row m-1">
-                            {loading ? (
-                                <div>
-                                    <Loading skNumber={15} />
-                                </div>
-                            ) : (
-                                productsListData?.length > 0 ? (
-                                    <>
-                                        {productsListData.map((item, index) => (
-                                            <div className="col-lg-4 col-md-4 col-sm-6 mt-3" key={index} data-aos="zoom-in">
-                                                <ProductListing productItem={item} />
-                                            </div>
+        <div className="">
+            <div className="row" style={{ margin: 0 }}>
+                <div className="col-md-12 " style={{ overflowX: 'auto', padding: 0 }}>
+                    <SliderComponents banners={slider} />
+                </div>
 
-                                        ))}
-                                        <div className='row text-center'>
-                                            <CustomPagination totalItems={totalItems} itemsPerPage={productDisplayLimit}  onPageChange={handlePageChange} currentPages={currentPage}/>
-                                        </div>
-                                    </>
-                                ) : (
-                                    <NotFound title="Sorry, There are no Products right now." />
-                                )
-                            )}
+            </div>
+            <div className='custom-container'>
+                <div className='m-5' style={{ backgroundColor: '#86a393', borderRadius: 5 }}>
+                    <div className="row p-5" style={{ margin: 0 }}>
+                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
+                                    <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
+                                </div>
+                                <h4 className="text-white">Home Delivery Available</h4>
+                                <p className="text-white">We ship to every state in the US</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
+                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                </div>
+                                <h4 className="text-white">Trusted and Quality Service</h4>
+                                <p className="text-white">Operating for 40 years</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
+                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                </div>
+                                <h4 className="text-white">Exclusive Meat Cuts</h4>
+                                <p className="text-white">Get access to our most exclusive cuts and rare finds</p>
+                            </div>
+                        </div>
+                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
+                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
+                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                </div>
+                                <h4 className="text-white">Loyalty Rewards Program</h4>
+                                <p className="text-white">Automatically reorder any product any time</p>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <div className="" style={{ marginTop: 30 }}>
+                    <div className='row'>
+                        <div className="col-md-8 offset-md-2 text-center">
+                            <h6>THE BEST ONLINE BUTCHER DELIVERING</h6>
+                            <h2>QUALITY MEAT</h2>
+                            <p className="mt-5 text-center">
+                                Online Butchers Shop source the finest beef,
+                                pork and lamb breeds from the British Isles.
+                                Our meat is bred to perfection to yield more
+                                marbling and fuller flavour. Our mission as
+                                an online butcher is to provide better
+                                meat sourced sustainably in the UK.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className='m-5'>
+                    <div className='row'>
+                        <div className='col-md-6 text-center'>
+                            <ImageComponent src={leftImage} alt="Product Image" width={true} classAtribute="" />
+                        </div>
+                        <div className='col-md-6 text-center'>
+                            {/* <ImageComponent src={rightImage} alt="Product Image" width={true} classAtribute="" />
+                            <img
+                        src={rightSide}
+                        alt='Right Image'
+                        className='img-fluid'
+                        style={{ marginLeft: '15px', position:'absolute'}}
+                    /> */}
+                            <img
+                                src={rightImage}
+                                alt='Product Image'
+                                className='img-fluid'
+                                style={{ position: 'relative' }} // Ensure parent div is relative for absolute positioning
+                            />
+                            <div style={{ position: 'absolute', left: '55%', top: '25%' }}>
+                                <img
+                                    src={rightSide}
+                                    alt='Right Image'
+                                    className='img-fluid'
+
+                                />
+                                <h1 className='text-white'>GRILL</h1>
+                                <p style={{ color: '#c8593b' }}><span className='text-white'>DAILY</span> 7.00 AM <span className='text-white'>TO</span> 11.00 AM</p>
+                                <div className="brown_button mt-3" onClick={''}>
+                                    Shop Now
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className=''>
+                    <div className='row'>
+                        <div className="col-md-8 offset-md-2 text-center">
+                            <h6>HOW IT WORKS</h6>
+                            <h2>WAYS TO BUY</h2>
+                        </div>
+                    </div>
+                    <div className='row mt-5'>
+                        {banners.map((image, index) => (
+                            <div key={index} className='col-md-3 text-center'>
+                                <img src={image?.src} alt={image?.alt} className='img-fluid rounded-circle' style={{ width: '200px', height: '200px' }} />
+                                <h3 className='mt-5'>{image?.label}</h3>
+                                <p>{image?.content}</p>
+                                <div className="brown_button mt-3" onClick={''}>
+                                    {image?.button_label}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    <div className='row mt-5'>
+                        <div className="slider-container">
+                            <Slider {...settings}>
+                                {sliderData.map((item, index) => (
+                                    <div key={index}>
+                                        <h3>{item.title}</h3>
+                                        <img src={item.image} alt={item.title} />
+                                    </div>
+                                ))}
+                            </Slider>
+                        </div>
+                    </div>
+
+
+                </div>
             </div>
-        </div>
+
+
+        </div >
 
     );
 }
