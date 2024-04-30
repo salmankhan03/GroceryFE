@@ -18,8 +18,6 @@ import { useSelector } from 'react-redux';
 import UserProfile from './pages/UserProfile/UserProfile';
 import MainScreen from './pages/Shop/Shop';
 import ShopScreen from './pages/Shop/Shop';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 
 function App() {
   const AuthData = useSelector(state => state.AuthReducer.userData);

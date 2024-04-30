@@ -11,9 +11,8 @@ import wayTobuy3 from "../../assets/images/H2-img-9.jpg"
 import TestimonalImage from "../../assets/images/images.jpg"
 import SliderComponents from "../../components/SliderComponents/SliderComponents"
 import ImageComponent from '../../components/ImageComponents/ImageComponents';
-
+import secTitle from "../../assets/images/sec-title-s-1.png"
 import Slider from 'react-slick';
-
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -31,25 +30,96 @@ function HomeScreen() {
         { id: 2, src: slider2, content: "Get our marinated and ready to cooks meats today.", label: "BBQ READY!", bgImages: SliderBG }
     ]
     const meatItems = [
-        { id: 1, name: 'Lamb' },
-        { id: 2, name: 'Rabbit' },
-        { id: 3, name: 'Specials' },
-        { id: 4, name: 'Pork' },
-        { id: 5, name: 'Beef' },
-        { id: 6, name: 'Chicken' },
+        { id: 1, name: 'Lamb', images: TestimonalImage },
+        { id: 2, name: 'Rabbit', images: TestimonalImage },
+        { id: 3, name: 'Specials', images: TestimonalImage },
+        { id: 4, name: 'Pork', images: TestimonalImage },
+        { id: 5, name: 'Beef', images: TestimonalImage },
+        { id: 6, name: 'Chicken', images: TestimonalImage },
     ];
 
+    const productsData = {
+        Lamb: [
+            { id: 1, name: 'Lamb 1', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 2, name: 'Lamb 2', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 3, name: 'Lamb 3', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 4, name: 'Lamb 4', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 5, name: 'Lamb 5', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 6, name: 'Lamb 6', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 7, name: 'Lamb 7', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 8, name: 'Lamb 8', stock: true, weight: '0.5kg', price: 50.00 },
+        ],
+        Rabbit: [
+            { id: 1, name: 'Rabbit 1', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 2, name: 'Rabbit 2', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 3, name: 'Rabbit 3', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 4, name: 'Rabbit 4', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 5, name: 'Rabbit 5', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 6, name: 'Rabbit 6', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 7, name: 'Rabbit 7', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 8, name: 'Rabbit 8', stock: true, weight: '0.5kg', price: 50.00 },
+            // Add more products as needed
+        ],
+        Specials: [
+            { id: 1, name: 'Specials 1', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 2, name: 'Specials 2', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 3, name: 'Specials 3', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 4, name: 'Specials 4', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 5, name: 'Specials 5', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 6, name: 'Specials 6', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 7, name: 'Specials 7', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 8, name: 'Specials 8', stock: true, weight: '0.5kg', price: 50.00 },
+            // Add more products as needed
+        ],
+        Beef: [
+            { id: 1, name: 'Beef 1', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 2, name: 'Beef 2', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 3, name: 'Beef 3', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 4, name: 'Beef 4', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 5, name: 'Beef 5', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 6, name: 'Beef 6', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 7, name: 'Beef 7', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 8, name: 'Beef 8', stock: true, weight: '0.5kg', price: 50.00 },
+            // Add more products as needed
+        ],
+        Chicken: [
+            { id: 1, name: 'Chicken 1', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 2, name: 'Chicken 2', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 3, name: 'Chicken 3', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 4, name: 'Chicken 4', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 5, name: 'Chicken 5', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 6, name: 'Chicken 6', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 7, name: 'Chicken 7', stock: true, weight: '0.5kg', price: 50.00 },
+            { id: 8, name: 'Chicken 8', stock: true, weight: '0.5kg', price: 50.00 },
+            // Add more products as needed
+        ],
+        // Define other categories similarly
+    };
+    const [selectedCategory, setSelectedCategory] = useState(productsData?.Lamb);
+
+    useEffect(()=>{
+        console.log("==",selectedCategory )
+    })
 
     const settings = {
         dots: false,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 6,
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
         pauseOnHover: true
     };
+    const selectCat = (data) => {
+        console.log(data?.name)
+    
+        const selectData = productsData[data?.name];
+    console.log(selectData);
+    setSelectedCategory(selectData)
+
+
+    }
 
     return (
         <div className="">
@@ -59,8 +129,8 @@ function HomeScreen() {
                 </div>
 
             </div>
-            <div className='custom-container'>
-                <div className='m-5' style={{ backgroundColor: '#86a393', borderRadius: 5 }}>
+            <div className='container'>
+                <div className='mt-5' style={{ backgroundColor: '#86a393', borderRadius: 5 }}>
                     <div className="row p-5" style={{ margin: 0 }}>
                         <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -170,17 +240,73 @@ function HomeScreen() {
                             </div>
                         ))}
                     </div>
-                    <div className="container mt-5">
+                </div>
+            </div>
+            <div className="mt-5">
+                <div className='p-5 shop-by-cat'>
+                    <div className='row'>
+                        <div className="col-md-8 offset-md-2 text-center">
+                            <h6>FIND THE MEAT YOU WANT</h6>
+                            <h2>SHOP BY CATEGORY</h2>
+                        </div>
+                    </div>
+                    <div className='mt-5'>
                         <Slider {...settings} className="meat-slider">
                             {meatItems.map((item) => (
-                                <div key={item.id} className="slider-item text-center">
-                                    <h3>{item.name}</h3>
+                                <div key={item.id} className="slider-item text-center p-3" >
+                                    <ImageComponent src={item?.images} alt="Product Image" width={true} classAtribute="" />
+                                    <h3 className='mt-2'>{item.name}</h3>
                                 </div>
                             ))}
                         </Slider>
                     </div>
-
-
+                </div>
+            </div>
+            <div className='container'>
+                <div className='row mt-5'>
+                    <div className='col-md-5'>
+                        <ImageComponent src={secTitle} alt="Title" classAtribute="" />
+                        <h5>MEAT ASSORTMENT</h5>
+                        <h3 className='mt-3'>PRODUCTS PRICE</h3>
+                    </div>
+                    <div className='col-md-7 text-center'>
+                        {/* Category */}
+                        <div className='row'>
+                            {meatItems.map((item) => (
+                                <div className="col-md-2 text-center" key={item.id} onClick={() => selectCat(item)}> {/* Updated onClick */}
+                                    <div style={{ padding: '5px' }}>
+                                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
+                                            <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
+                                        </div>
+                                        <h5 className='mt-2 text-center'>{item.name}</h5>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                </div>
+                <div className='mt-5 row'>
+                    {selectedCategory?.length > 0 && selectedCategory?.map((product) => {
+                        console.log(selectedCategory)
+                        return(
+                        <div className='col-md-6' key={product.id} style={{borderTop:'1px dashed #ccc'}}>
+                            <div className='row mt-5' >
+                                <div className='col-md-2'>
+                                    <ImageComponent src={secTitle} alt='Title' classAtribute='' />
+                                </div>
+                                <div className='col-md-6 text-left'>
+                                    <h3>{product.name}</h3>
+                                    <p>{product.stock ? 'In Stock' : 'Out of Stock'}</p>
+                                </div>
+                                <div className='col-md-2'>
+                                    <p>{product.weight}</p>
+                                </div>
+                                <div className='col-md-2'>
+                                    <p>${product.price}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )})}
                 </div>
             </div>
 

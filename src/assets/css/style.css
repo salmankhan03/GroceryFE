@@ -2876,12 +2876,12 @@ input:-webkit-autofill:active{
 .pointer-on-hover {
   cursor: pointer;
 }
-/* Shop By Category */
-.shop-by-cat{
-    background-image: url('../images/H2-img-10.jpg');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size: cover
+
+ .shop-by-cat {
+  background-image: url('../images/H2-img-10.jpg'),                
+                    url('../images/H2-png-6.png'),
+                    url('../images/H2-png-7.png');
+  background-position: center center,left bottom, right top;    
+  background-repeat: no-repeat; 
+  background-size: cover, auto,auto
 }
-
-
