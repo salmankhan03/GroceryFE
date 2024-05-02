@@ -101,6 +101,7 @@ function HomeScreen() {
         console.log("==",selectedCategory )
     })
 
+
     const settings = {
         dots: false,
         infinite: true,
@@ -109,8 +110,18 @@ function HomeScreen() {
         slidesToScroll: 1,
         autoplay: true,
         autoplaySpeed: 3000,
-        pauseOnHover: true
+        pauseOnHover: true,
+        responsive: [
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1
+                }
+            }
+        ]
     };
+
     const selectCat = (data) => {
         console.log(data?.name)
     

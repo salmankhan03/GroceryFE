@@ -10,6 +10,7 @@ import CategoryServices from '../../services/categoryService';
 import { setCategoryList } from '../../redux/action/category-action';
 import CustomPagination from '../../components/PaginationComponents/Pagination';
 import { setBrandList } from '../../redux/action/brand-action';
+import Banner from "../../components/Banner";
 
 function ShopScreen() {
     const dispatch = useDispatch();
@@ -195,7 +196,9 @@ function ShopScreen() {
     };
 
     return (
-        <div className="custom-header" >
+        <div>
+            <Banner/>
+            <div className="custom-header" >
             <div className="">
                 <div className="row mt-3" style={{}}>
                     <div className="col-md-3 sidebar_hide mt-2">
@@ -276,7 +279,7 @@ function ShopScreen() {
                 </div>
             </div>
         </div>
-
+        </div>
     );
 }
 

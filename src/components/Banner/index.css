@@ -1,0 +1,15 @@
+.bannerTitle{
+    text-align: center;
+    color: #fff;
+    margin: 0 0 119px;
+    font-size: 64px;
+    position: relative;
+    font-family: "Vast Shadow", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
+.container-fluid{
+    padding-right: 0px!important;
+    padding-left: 0px!important;
+}
