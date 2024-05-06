@@ -11,8 +11,11 @@ import { setCategoryList } from '../../redux/action/category-action';
 import CustomPagination from '../../components/PaginationComponents/Pagination';
 import { setBrandList } from '../../redux/action/brand-action';
 import Banner from "../../components/Banner";
+import { useLocation } from 'react-router-dom';
 
 function ShopScreen() {
+    const location = useLocation();
+    const categoryId = location.state?.categoryId;
     const dispatch = useDispatch();
     const [loading, setLoading] = useState(true)
     const [page, setPage] = useState(1)
@@ -47,7 +50,13 @@ function ShopScreen() {
      
     }, [selectedOption,currentPage])
 
-
+    useEffect(() => {
+        const categoryIds = parseInt(categoryId, 10);
+        const updatedCategories = categoryIds
+            ? [...selectedCategories, categoryIds]
+            : selectedCategories.filter(id => id !== categoryIds);
+        setSelectedCategories(updatedCategories);
+    }, [categoryId])
 
     const [availabilityData, setAvailabilityData] = useState([
         { id: 4, name: 'exclude-from-catalog' },
@@ -66,7 +75,7 @@ function ShopScreen() {
         const getselectedBrands = brandData?.filter(brand => selectedBrands.includes(brand.id));
         const selectedBrandNames = getselectedBrands?.map(brand => brand.name);
         let obj = {};
-        if(selectedSortingOption){
+        if (selectedSortingOption) {
             obj.sort = { price: selectedSortingOption === "low" ? "asc" : "desc" };
         }
         let data = {
@@ -74,9 +83,9 @@ function ShopScreen() {
             "brands": selectedBrandNames,
             // "price": filteredPrice[1] === null || filteredPrice[1] === undefined ? [0, JSON.parse(maxPrice)] :filteredPrice ,
             "price": filteredPrice[1] === null || filteredPrice[1] === undefined
-                ? [0, maxPrice !== undefined ? JSON.parse(maxPrice) : 0]
+                ? [0, maxPrice !== undefined ? JSON.parse(maxPrice) : 1000]
                 : filteredPrice,
-                ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
+            ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
         }
         // (selectedCategories.length > 0 || selectedBrands.length > 0) && filteredPrice !== null
         if (data?.brands?.length > 0 || data?.category?.length > 0 || data?.price[1] !== 0) {
@@ -87,7 +96,7 @@ function ShopScreen() {
             getProductsList()
         }
 
-    }, [selectedCategories, selectedBrands, filteredPrice,selectedSortingOption])
+    }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption])
     function getBrandList() {
         CategoryServices.getAllBrand({
             page: page,
@@ -141,7 +150,7 @@ function ShopScreen() {
                 setCurrentPage(1)
                 setTimeout(() => {
                     setLoading(false)
-                  }, 1000);
+                }, 1000);
             }
             // setLoading(false)
 
@@ -168,7 +177,7 @@ function ShopScreen() {
                 setTotalItems(resp?.list?.total)
                 setTimeout(() => {
                     setLoading(false)
-                  }, 1000); 
+                }, 1000);
             }
         }).catch((error) => {
             setLoading(false)
@@ -197,88 +206,88 @@ function ShopScreen() {
 
     return (
         <div>
-            <Banner/>
+            <Banner />
             <div className="custom-header" >
-            <div className="">
-                <div className="row mt-3" style={{}}>
-                    <div className="col-md-3 sidebar_hide mt-2">
-                        <div className='m-2'>
-                            <LeftSideBarComponents
-                                categoriesData={categoriesData}
-                                brandData={brandData}
-                                availabilityData={availabilityData}
-                                selectedCategories={selectedCategories}
-                                setSelectedCategories={setSelectedCategories}
-                                selectedBrands={selectedBrands}
-                                setSelectedBrands={setSelectedBrands}
-                                filteredPrice={filteredPrice}
-                                setFilteredPrice={setFilteredPrice}
-                                maximumPrice={maxPrice}
-                            />
-                        </div>
-                    </div>
-                    <div className="col-md-9 mt-2">
-                        <div className="row mb-5">
-                            <div className="col-md-6 col-xs-4 mt-1">
-                                <div>
-                                    Showing all {productsListData?.length} results
-                                    <span className='ml-2'>
-                                        <select
-                                            id="simpleDropdown"
-                                            value={selectedOption}
-                                            onChange={handleChange}
-                                            className='select-dropdown'
-                                        ><option defaultValue={20} >20</option>
-                                            <option value="12">12</option>
-                                            <option value="24">24</option>
-                                            <option value="36">36</option>
-                                        </select>
-                                    </span>
-                                </div>
+                <div className="">
+                    <div className="row mt-3" style={{}}>
+                        <div className="col-md-3 sidebar_hide mt-2">
+                            <div className='m-2'>
+                                <LeftSideBarComponents
+                                    categoriesData={categoriesData}
+                                    brandData={brandData}
+                                    availabilityData={availabilityData}
+                                    selectedCategories={selectedCategories}
+                                    setSelectedCategories={setSelectedCategories}
+                                    selectedBrands={selectedBrands}
+                                    setSelectedBrands={setSelectedBrands}
+                                    filteredPrice={filteredPrice}
+                                    setFilteredPrice={setFilteredPrice}
+                                    maximumPrice={maxPrice}
+                                />
                             </div>
-                            <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
-                                <select
-                                    id="sortingDropdown"
-                                    value={selectedSortingOption}
-                                    onChange={handleSortingChange}
-                                    className='select-dropdown'
-                                >
-                                    {/* <option value="default-sorting">Default sorting</option> */}
-                                    <option value="low">Sort by price: low to high</option>
-                                    <option value="high">Sort by price: high to low</option>
-                                    {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
+                        </div>
+                        <div className="col-md-9 mt-2">
+                            <div className="row mb-5">
+                                <div className="col-md-6 col-xs-4 mt-1">
+                                    <div>
+                                        Showing all {productsListData?.length} results
+                                        <span className='ml-2'>
+                                            <select
+                                                id="simpleDropdown"
+                                                value={selectedOption}
+                                                onChange={handleChange}
+                                                className='select-dropdown'
+                                            ><option defaultValue={20} >20</option>
+                                                <option value="12">12</option>
+                                                <option value="24">24</option>
+                                                <option value="36">36</option>
+                                            </select>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
+                                    <select
+                                        id="sortingDropdown"
+                                        value={selectedSortingOption}
+                                        onChange={handleSortingChange}
+                                        className='select-dropdown'
+                                    >
+                                        {/* <option value="default-sorting">Default sorting</option> */}
+                                        <option value="low">Sort by price: low to high</option>
+                                        <option value="high">Sort by price: high to low</option>
+                                        {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
                                     <option value="date-added-desc">Sort by Date Added (Desc)</option> */}
-                                    {/* <option value="sort-by-latest">Sort by latest</option> */}
-                                </select>
-                            </div>
-                        </div>
-                        <div className="row m-1">
-                            {loading ? (
-                                <div>
-                                    <Loading skNumber={15} />
+                                        {/* <option value="sort-by-latest">Sort by latest</option> */}
+                                    </select>
                                 </div>
-                            ) : (
-                                productsListData?.length > 0 ? (
-                                    <>
-                                        {productsListData.map((item, index) => (
-                                            <div className="col-lg-4 col-md-4 col-sm-6 mt-3" key={index} data-aos="zoom-in">
-                                                <ProductListing productItem={item} />
-                                            </div>
-
-                                        ))}
-                                        <div className='row text-center'>
-                                            <CustomPagination totalItems={totalItems} itemsPerPage={productDisplayLimit}  onPageChange={handlePageChange} currentPages={currentPage}/>
-                                        </div>
-                                    </>
+                            </div>
+                            <div className="row m-1">
+                                {loading ? (
+                                    <div>
+                                        <Loading skNumber={15} />
+                                    </div>
                                 ) : (
-                                    <NotFound title="Sorry, There are no Products right now." />
-                                )
-                            )}
+                                    productsListData?.length > 0 ? (
+                                        <>
+                                            {productsListData.map((item, index) => (
+                                                <div className="col-lg-4 col-md-4 col-sm-6 mt-3" key={index} data-aos="zoom-in">
+                                                    <ProductListing productItem={item} />
+                                                </div>
+
+                                            ))}
+                                            <div className='row text-center'>
+                                                <CustomPagination totalItems={totalItems} itemsPerPage={productDisplayLimit} onPageChange={handlePageChange} currentPages={currentPage} />
+                                            </div>
+                                        </>
+                                    ) : (
+                                        <NotFound title="Sorry, There are no Products right now." />
+                                    )
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
         </div>
     );
 }

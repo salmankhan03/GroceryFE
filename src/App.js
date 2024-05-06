@@ -47,7 +47,7 @@ function App() {
         element={<WithNavbar component={LoginScreen} />}/>
 
           <Route path="/Home" element={<WithNavbar component={HomeScreen} />} />
-          <Route path="/ShopScreen" element={<WithNavbar component={ShopScreen} />} />
+          <Route path="/Shop" element={<WithNavbar component={ShopScreen} />} />
 
           <Route path="/products-details/:id" element={<WithNavbar component={ProductDetails} />} />
           <Route path="/signup" element={<SignUp />} />

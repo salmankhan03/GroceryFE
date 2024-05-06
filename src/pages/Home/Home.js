@@ -20,9 +20,11 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import FooterComponents from '../../components/FooterComponents/FooterComponents';
+import { useNavigate } from 'react-router-dom';
 
 
 function HomeScreen() {
+    const navigate = useNavigate();
     const banners = [
         { id: 1, src: wayTobuy1, alt: 'Banner 1', label: 'You Choose', content: 'Browse our selection, check out online, and pick up on your scheduled date at our store.', button_label: 'Shop Online' },
         { id: 2, src: wayTobuy2, alt: 'Banner 3', label: 'We Deliver', content: 'You order ships for free, frozen for freshness and packed in an eco-friendly box.', button_label: 'See More' },
@@ -129,13 +131,15 @@ function HomeScreen() {
     };
 
     const selectCat = (data) => {
-        console.log(data?.name)
-
         const selectData = productsData[data?.name];
-        console.log(selectData);
         setSelectedCategory(selectData)
-
-
+    }
+    const gotoShopScreen = (data) => {
+          navigate(`/Shop`, {
+            state: {
+                categoryId: data?.id
+            }
+          })
     }
 
     return (
@@ -214,6 +218,7 @@ function HomeScreen() {
                                     className='img-fluid'
                                     style={{ maxWidth: '100%', height: 'auto' }}
                                 />
+                                {/* <ImageComponent  */}
                                 <div className="position-absolute top-0 start-0 translate-middle" style={{ zIndex: '1', marginLeft: '50px' }}>
                                     <img
                                         src={premiumLable}
@@ -286,7 +291,7 @@ function HomeScreen() {
                     <div className='mt-5'>
                         <Slider {...settings} className="meat-slider">
                             {meatItems.map((item) => (
-                                <div key={item.id} className="slider-item text-center p-3" >
+                                <div key={item.id} className="slider-item text-center p-3" onClick={() => gotoShopScreen(item)} >
                                     <ImageComponent src={item?.images} alt="Product Image" width={true} classAtribute="" />
                                     <h5 className='mt-2'>{item.name}</h5>
                                 </div>
@@ -309,7 +314,6 @@ function HomeScreen() {
                             {meatItems.map((item) => {
                                 return (
                                     <div className={`col-4 col-md-2 text-center mb-3 ${selectedCategory === productsData[item.name] ? 'selected-cat-bg' : ''}`} key={item.id} onClick={() => selectCat(item)}>
-                                        {/* className={`col-xs-2 col-md-2 text-center mb-3 ${selectedCategory === productsData[item.name] ? 'selected-cat-bg' : ''}`} */}
                                         <div style={{ padding: '5px' }}>
                                             <div className="product-cat-circle">
                                                 <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
@@ -331,7 +335,7 @@ function HomeScreen() {
                                 <div className='col-md-6 col-lg-6' key={product.id} style={{ borderTop: '1px dashed #ccc' }}>
                                     <div className='row mt-5 heading-center-align'>
                                         <div className='col-xs-12 col-md-12 col-lg-3'>
-                                            <ImageComponent src={secTitle} alt='Title' classAtribute='' />
+                                                <ImageComponent src={secTitle} alt='Title' classAtribute='' />
                                         </div>
                                         <div className='col-xs-12 col-md-12 col-lg-5 md-margin-top'>
                                             <h3>{product.name}</h3>
