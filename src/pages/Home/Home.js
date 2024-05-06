@@ -95,9 +95,10 @@ function HomeScreen() {
             { id: 6, name: 'Chicken 6', stock: true, weight: '0.5kg', price: 50.00 },
             { id: 7, name: 'Chicken 7', stock: true, weight: '0.5kg', price: 50.00 },
             { id: 8, name: 'Chicken 8', stock: true, weight: '0.5kg', price: 50.00 },
-            // Add more products as needed
         ],
-        // Define other categories similarly
+        Pork: [
+
+        ],
     };
     const [selectedCategory, setSelectedCategory] = useState(productsData?.Lamb);
 
@@ -115,6 +116,7 @@ function HomeScreen() {
         autoplay: true,
         autoplaySpeed: 3000,
         pauseOnHover: true,
+        arrows: false,
         responsive: [
             {
                 breakpoint: 768,
@@ -202,44 +204,57 @@ function HomeScreen() {
                         </div>
                     </div>
                 </div>
-                <div className='m-5'>
+                <div className='mt-3'>
                     <div className='row '>
-                        <div className='col-md-6 text-center premiumLabel '>
-                            <ImageComponent src={leftImage} alt="Product Image" width={true} classAtribute="" style={{position:''}} />
-                        </div>
                         <div className='col-md-6 text-center'>
-                            {/* <ImageComponent src={rightImage} alt="Product Image" width={true} classAtribute="" />
-                            <img
-                        src={rightSide}
-                        alt='Right Image'
-                        className='img-fluid'
-                        style={{ marginLeft: '15px', position:'absolute'}}
-                    /> */}
-                            <img
-                                src={rightImage}
-                                alt='Product Image'
-                                className='img-fluid'
-                                style={{ position: 'relative' }} // Ensure parent div is relative for absolute positioning
-                            />
-                            <div style={{ position: 'absolute', left: '55%', top: '25%' }}>
+                            <div className="position-relative">
                                 <img
-                                    src={rightSide}
-                                    alt='Right Image'
+                                    src={leftImage}
+                                    alt='Product Image'
                                     className='img-fluid'
-
+                                    style={{ maxWidth: '100%', height: 'auto' }}
                                 />
-                                <h1 className='text-white'>GRILL</h1>
-                                <p style={{ color: '#c8593b' }}><span className='text-white'>DAILY</span> 7.00 AM <span className='text-white'>TO</span> 11.00 AM</p>
-                                <div className="brown_button mt-3" >
-                                    Shop Now
+                                <div className="position-absolute top-0 start-0 translate-middle" style={{ zIndex: '1', marginLeft: '50px' }}>
+                                    <img
+                                        src={premiumLable}
+                                        alt='Right Image'
+                                        className='img-fluid'
+                                        style={{ maxWidth: '50%' }}
+                                    />
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <div className='col-md-6 text-center sm-margin-top'>
+                            <div className="position-relative">
+                                <img
+                                    src={rightImage}
+                                    alt='Product Image'
+                                    className='img-fluid'
+                                    style={{ maxWidth: '100%', height: 'auto' }}
+                                />
+                                <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: '1',marginLeft: '80px'  }}>
+                                    <img
+                                        src={rightSide}
+                                        alt='Right Image'
+                                        className='img-fluid'
+                                        style={{ maxWidth: '50%' }}
+                                    />
+                                    <h3 className='text-white sub-title-Vast-Shadow'>GRILL</h3>
+                                    <p style={{ color: '#c8593b' }}><span className='text-white'>DAILY</span> 7.00 AM <span className='text-white'>TO</span> 11.00 AM</p>
+                                    <div className="brown_button mt-2" >
+                                        Shop Now
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
-                <div className=''>
+                <div className='mt-5'>
                     <div className='row'>
-                        <div className="col-md-8 offset-md-2 text-center">
+                        <div className="col-md-12 col-lg-12  text-center">
                             <h6>HOW IT WORKS</h6>
                             <h2 className='sub-title-Vast-Shadow' style={{ color: '#c8593b' }}>WAYS TO BUY</h2>
                             <MySVGIcon />
@@ -247,7 +262,7 @@ function HomeScreen() {
                     </div>
                     <div className='row mt-5'>
                         {banners.map((image, index) => (
-                            <div key={index} className='col-md-3 text-center'>
+                            <div key={index} className='col-md-6 col-lg-3 text-center md-margin-top'>
                                 <img src={image?.src} alt={image?.alt} className='img-fluid rounded-circle' style={{ width: '200px', height: '200px' }} />
                                 <h3 className='mt-5 heading-Vast-Shadow'>{image?.label}</h3>
                                 <p>{image?.content}</p>
@@ -262,9 +277,10 @@ function HomeScreen() {
             <div className="mt-5">
                 <div className='p-5 shop-by-cat'>
                     <div className='row'>
-                        <div className="col-md-8 offset-md-2 text-center">
+                        <div className="col-md-12 col-lg-12  text-center">
                             <h6>FIND THE MEAT YOU WANT</h6>
-                            <h2>SHOP BY CATEGORY</h2>
+                            <h2 className='sub-title-Vast-Shadow' style={{ color: '#c8593b' }}>SHOP BY CATEGORY</h2>
+                            <MySVGIcon />
                         </div>
                     </div>
                     <div className='mt-5'>
@@ -272,7 +288,7 @@ function HomeScreen() {
                             {meatItems.map((item) => (
                                 <div key={item.id} className="slider-item text-center p-3" >
                                     <ImageComponent src={item?.images} alt="Product Image" width={true} classAtribute="" />
-                                    <h3 className='mt-2'>{item.name}</h3>
+                                    <h5 className='mt-2'>{item.name}</h5>
                                 </div>
                             ))}
                         </Slider>
@@ -281,50 +297,64 @@ function HomeScreen() {
             </div>
             <div className='container'>
                 <div className='row mt-5'>
-                    <div className='col-md-5'>
+                    <div className='col-md-12 col-lg-5 heading-center-align'>
                         <ImageComponent src={secTitle} alt="Title" classAtribute="" />
-                        <h5>MEAT ASSORTMENT</h5>
+                        <h5 className='mt-3'>MEAT ASSORTMENT</h5>
                         <h3 className='mt-3'>PRODUCTS PRICE</h3>
                     </div>
-                    <div className='col-md-7 text-center'>
+
+                    <div className='col-md-12 col-lg-7 text-center'>
                         {/* Category */}
                         <div className='row'>
-                            {meatItems.map((item) => (
-                                <div className="col-md-2 text-center" key={item.id} onClick={() => selectCat(item)}> 
-                                    <div style={{ padding: '5px' }}>
-                                        <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                            <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
+                            {meatItems.map((item) => {
+                                return (
+                                    <div className={`col-4 col-md-2 text-center mb-3 ${selectedCategory === productsData[item.name] ? 'selected-cat-bg' : ''}`} key={item.id} onClick={() => selectCat(item)}>
+                                        {/* className={`col-xs-2 col-md-2 text-center mb-3 ${selectedCategory === productsData[item.name] ? 'selected-cat-bg' : ''}`} */}
+                                        <div style={{ padding: '5px' }}>
+                                            <div className="product-cat-circle">
+                                                <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
+                                            </div>
+                                            <h5 className='mt-2 text-center'>{item.name}</h5>
                                         </div>
-                                        <h5 className='mt-2 text-center'>{item.name}</h5>
                                     </div>
-                                </div>
-                            ))}
+                                )
+                            })}
                         </div>
+
                     </div>
                 </div>
                 <div className='mt-5 row'>
-                    {selectedCategory?.length > 0 && selectedCategory?.map((product) => {
-                        console.log(selectedCategory)
-                        return (
-                            <div className='col-md-6' key={product.id} style={{ borderTop: '1px dashed #ccc' }}>
-                                <div className='row mt-5' >
-                                    <div className='col-md-2'>
-                                        <ImageComponent src={secTitle} alt='Title' classAtribute='' />
-                                    </div>
-                                    <div className='col-md-6 text-left'>
-                                        <h3>{product.name}</h3>
-                                        <p>{product.stock ? 'In Stock' : 'Out of Stock'}</p>
-                                    </div>
-                                    <div className='col-md-2'>
-                                        <p>{product.weight}</p>
-                                    </div>
-                                    <div className='col-md-2'>
-                                        <p>${product.price}</p>
+                    {selectedCategory?.length > 0 ? (
+
+                        selectedCategory?.map((product) => {
+                            return (
+                                <div className='col-md-6 col-lg-6' key={product.id} style={{ borderTop: '1px dashed #ccc' }}>
+                                    <div className='row mt-5 heading-center-align'>
+                                        <div className='col-xs-12 col-md-12 col-lg-3'>
+                                            <ImageComponent src={secTitle} alt='Title' classAtribute='' />
+                                        </div>
+                                        <div className='col-xs-12 col-md-12 col-lg-5 md-margin-top'>
+                                            <h3>{product.name}</h3>
+                                            <p>{product.stock ? 'In Stock' : 'Out of Stock'}</p>
+                                        </div>
+                                        <div className='col-6 col-md-6 col-lg-2 text-md-right'>
+                                            <p>{product.weight}</p>
+                                        </div>
+                                        <div className='col-6 col-md-6 col-lg-2 text-md-left'>
+                                            <p>${product.price}</p>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )
-                    })}
+
+
+                            )
+                        })) : (
+                        <div className='text-center mt-5'>
+                            <h3>
+                                No products available
+                            </h3>
+                        </div>
+                    )}
                 </div>
             </div>
             <div className='mt-3'>

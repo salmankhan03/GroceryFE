@@ -2906,6 +2906,10 @@ input:-webkit-autofill:active{
   font-size: 70px;
   /* font-weight: ; */
 }
+.carousel-heading-Vast-Shadow{
+  font-family: 'Vast Shadow', sans-serif; 
+
+}
 .sub-title-Vast-Shadow {
   font-family: 'Vast Shadow', sans-serif; 
   font-weight: 400;
@@ -2915,3 +2919,24 @@ input:-webkit-autofill:active{
   font-family: 'Vast Shadow', sans-serif; 
   font-size: 18px;
 }
+
+/* Regular class */
+.product-cat-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background-color: #f6f2ec;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* Hover class */
+.product-cat-circle:hover {
+  background-color: #A42125; /* Change the background color on hover */
+}
+.selected-cat-bg{
+  background-color: #A42125;
+}
+/* Example media query for smaller screens */

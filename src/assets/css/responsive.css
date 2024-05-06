@@ -267,6 +267,12 @@
   .small-card{
     display: block;
   }
+  .heading-center-align{
+    text-align: center;
+  }
+  .md-margin-top{
+    margin-top: 2rem !important;
+  }
 }
 /************
 10. 767px
@@ -340,6 +346,10 @@
   .custom-margin {
     margin: 0 !important;
   }
+  .sm-margin-top{
+    margin-top: 2rem !important;
+  }
+
 }
 
 /************
