@@ -16,7 +16,7 @@ const SliderComponents = ({ banners }) => {
                     <ImageComponent src={banner.src} alt={`Slide ${index + 1}`} classAtribute="slider-image d-block w-100"  style={{}}/>
                     <Carousel.Caption className='custom-caption'>
                         <p className='text-white'>{banner?.content}</p>
-                        <h1 style={{ color: '#c8593b' }}>{banner?.label}</h1>
+                        <p className="title-Vast-Shadow" style={{ color: '#c8593b' }}>{banner?.label}</p>
                         <ImageComponent src={banner.bgImages} alt={`Slide ${index + 1}`} classAtribute="" />
                     </Carousel.Caption>
                 </Carousel.Item>

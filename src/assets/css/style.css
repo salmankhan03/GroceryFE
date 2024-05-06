@@ -47,6 +47,11 @@ COLOR PALETTE
 ***********/
 
 @import url("https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,900");
+@font-face {
+  font-family: 'Vast Shadow';
+  src: url('../fonts/Vast_Shadow/VastShadow-Regular.ttf') format('truetype');
+  /* Add more font formats (e.g., woff, woff2) for better cross-browser support */
+}
 
 /*********************************
 2. Body and some general stuff
@@ -66,6 +71,7 @@ body {
   color: #1e1e27;
   min-height: 100vh;
 }
+
 
 div {
   display: block;
@@ -2877,11 +2883,35 @@ input:-webkit-autofill:active{
   cursor: pointer;
 }
 
- .shop-by-cat {
+.shop-by-cat {
   background-image: url('../images/H2-img-10.jpg'),                
                     url('../images/H2-png-6.png'),
                     url('../images/H2-png-7.png');
-  background-position: center center,left bottom, right top;    
+  background-position: center center, left bottom, right top;    
   background-repeat: no-repeat; 
-  background-size: cover, auto,auto
+  background-size: cover, cover, auto;
+}
+
+.premiumLabel{
+  background-image: url('../images/premium.png');        
+  background-position: left top;    
+  background-repeat: no-repeat; 
+  background-size: auto;
+  z-index: 99;
+}
+
+/* Vast Shadow fonts */
+.title-Vast-Shadow {
+  font-family: 'Vast Shadow', sans-serif; 
+  font-size: 70px;
+  /* font-weight: ; */
+}
+.sub-title-Vast-Shadow {
+  font-family: 'Vast Shadow', sans-serif; 
+  font-weight: 400;
+  /* font-weight: ; */
+}
+.heading-Vast-Shadow{
+  font-family: 'Vast Shadow', sans-serif; 
+  font-size: 18px;
 }

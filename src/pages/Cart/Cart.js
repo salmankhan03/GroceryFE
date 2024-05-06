@@ -257,7 +257,7 @@ const CartPage = () => {
                                         placeholder="Enter your coupon code"
                                         required
                                     />
-                                    <button class="checkout-button cart-checkout-btn" onClick={handleApplyCoupon} >Apply Coupon</button>
+                                    <button className="checkout-button cart-checkout-btn" onClick={handleApplyCoupon} >Apply Coupon</button>
 
                                 </div>
                             )} */}
@@ -269,7 +269,7 @@ const CartPage = () => {
                             <div className='text-right'>
                                 {checkCouponCode?.is_coupon_code_valid === false && <h6 style={{color: 'red'}}>{checkCouponCode.message}</h6>}
                                 {/*<h6>Congrats, you'r eligible for Free <i className="fas fa-truck"></i> <br />Shipping</h6>*/}
-                                <button class="checkout-button cart-checkout-btn mt-4" onClick={() => gotoCheckout()} >Proceed to Checkout</button>
+                                <button className="checkout-button cart-checkout-btn mt-4" onClick={() => gotoCheckout()} >Proceed to Checkout</button>
                             </div>
                         </div>
                     </div>

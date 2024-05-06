@@ -5,6 +5,7 @@ import SliderBG from "../../assets/images/banner/h1-slider-bg-01.png"
 import leftImage from "../../assets/images/H2-img-1.jpg"
 import rightImage from "../../assets/images/H2-img-2.jpg"
 import rightSide from "../../assets/images/H2-png-3.png"
+import premiumLable from "../../assets/images/premium.png"
 import wayTobuy1 from "../../assets/images/H2-img-7.jpg"
 import wayTobuy2 from "../../assets/images/H2-img-8.jpg"
 import wayTobuy3 from "../../assets/images/H2-img-9.jpg"
@@ -12,10 +13,13 @@ import TestimonalImage from "../../assets/images/images.jpg"
 import SliderComponents from "../../components/SliderComponents/SliderComponents"
 import ImageComponent from '../../components/ImageComponents/ImageComponents';
 import secTitle from "../../assets/images/sec-title-s-1.png"
+import { ReactComponent as MySVGIcon } from '../../assets/images/svg/clipart.svg';
+
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import FooterComponents from '../../components/FooterComponents/FooterComponents';
 
 
 function HomeScreen() {
@@ -97,8 +101,8 @@ function HomeScreen() {
     };
     const [selectedCategory, setSelectedCategory] = useState(productsData?.Lamb);
 
-    useEffect(()=>{
-        console.log("==",selectedCategory )
+    useEffect(() => {
+        console.log("==", selectedCategory)
     })
 
 
@@ -124,10 +128,10 @@ function HomeScreen() {
 
     const selectCat = (data) => {
         console.log(data?.name)
-    
+
         const selectData = productsData[data?.name];
-    console.log(selectData);
-    setSelectedCategory(selectData)
+        console.log(selectData);
+        setSelectedCategory(selectData)
 
 
     }
@@ -148,34 +152,34 @@ function HomeScreen() {
                                 <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
                                     <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
                                 </div>
-                                <h4 className="text-white">Home Delivery Available</h4>
+                                <h4 className="text-white heading-Vast-Shadow">Home Delivery Available</h4>
                                 <p className="text-white">We ship to every state in the US</p>
                             </div>
                         </div>
                         <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
                                 </div>
-                                <h4 className="text-white">Trusted and Quality Service</h4>
+                                <h4 className="text-white heading-Vast-Shadow">Trusted and Quality Service</h4>
                                 <p className="text-white">Operating for 40 years</p>
                             </div>
                         </div>
                         <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
                                 </div>
-                                <h4 className="text-white">Exclusive Meat Cuts</h4>
+                                <h4 className="text-white heading-Vast-Shadow">Exclusive Meat Cuts</h4>
                                 <p className="text-white">Get access to our most exclusive cuts and rare finds</p>
                             </div>
                         </div>
                         <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
                                 <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i class="fa fa-user-secret" aria-hidden="true"></i>
+                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
                                 </div>
-                                <h4 className="text-white">Loyalty Rewards Program</h4>
+                                <h4 className="text-white heading-Vast-Shadow">Loyalty Rewards Program</h4>
                                 <p className="text-white">Automatically reorder any product any time</p>
                             </div>
                         </div>
@@ -185,7 +189,8 @@ function HomeScreen() {
                     <div className='row'>
                         <div className="col-md-8 offset-md-2 text-center">
                             <h6>THE BEST ONLINE BUTCHER DELIVERING</h6>
-                            <h2>QUALITY MEAT</h2>
+                            <h2 className='sub-title-Vast-Shadow' style={{ color: '#c8593b' }}>QUALITY MEAT</h2>
+                            <MySVGIcon />
                             <p className="mt-5 text-center">
                                 Online Butchers Shop source the finest beef,
                                 pork and lamb breeds from the British Isles.
@@ -198,9 +203,9 @@ function HomeScreen() {
                     </div>
                 </div>
                 <div className='m-5'>
-                    <div className='row'>
-                        <div className='col-md-6 text-center'>
-                            <ImageComponent src={leftImage} alt="Product Image" width={true} classAtribute="" />
+                    <div className='row '>
+                        <div className='col-md-6 text-center premiumLabel '>
+                            <ImageComponent src={leftImage} alt="Product Image" width={true} classAtribute="" style={{position:''}} />
                         </div>
                         <div className='col-md-6 text-center'>
                             {/* <ImageComponent src={rightImage} alt="Product Image" width={true} classAtribute="" />
@@ -225,7 +230,7 @@ function HomeScreen() {
                                 />
                                 <h1 className='text-white'>GRILL</h1>
                                 <p style={{ color: '#c8593b' }}><span className='text-white'>DAILY</span> 7.00 AM <span className='text-white'>TO</span> 11.00 AM</p>
-                                <div className="brown_button mt-3" onClick={''}>
+                                <div className="brown_button mt-3" >
                                     Shop Now
                                 </div>
                             </div>
@@ -236,16 +241,17 @@ function HomeScreen() {
                     <div className='row'>
                         <div className="col-md-8 offset-md-2 text-center">
                             <h6>HOW IT WORKS</h6>
-                            <h2>WAYS TO BUY</h2>
+                            <h2 className='sub-title-Vast-Shadow' style={{ color: '#c8593b' }}>WAYS TO BUY</h2>
+                            <MySVGIcon />
                         </div>
                     </div>
                     <div className='row mt-5'>
                         {banners.map((image, index) => (
                             <div key={index} className='col-md-3 text-center'>
                                 <img src={image?.src} alt={image?.alt} className='img-fluid rounded-circle' style={{ width: '200px', height: '200px' }} />
-                                <h3 className='mt-5'>{image?.label}</h3>
+                                <h3 className='mt-5 heading-Vast-Shadow'>{image?.label}</h3>
                                 <p>{image?.content}</p>
-                                <div className="brown_button mt-3" onClick={''}>
+                                <div className="brown_button mt-3" >
                                     {image?.button_label}
                                 </div>
                             </div>
@@ -284,7 +290,7 @@ function HomeScreen() {
                         {/* Category */}
                         <div className='row'>
                             {meatItems.map((item) => (
-                                <div className="col-md-2 text-center" key={item.id} onClick={() => selectCat(item)}> {/* Updated onClick */}
+                                <div className="col-md-2 text-center" key={item.id} onClick={() => selectCat(item)}> 
                                     <div style={{ padding: '5px' }}>
                                         <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
                                             <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
@@ -299,26 +305,30 @@ function HomeScreen() {
                 <div className='mt-5 row'>
                     {selectedCategory?.length > 0 && selectedCategory?.map((product) => {
                         console.log(selectedCategory)
-                        return(
-                        <div className='col-md-6' key={product.id} style={{borderTop:'1px dashed #ccc'}}>
-                            <div className='row mt-5' >
-                                <div className='col-md-2'>
-                                    <ImageComponent src={secTitle} alt='Title' classAtribute='' />
-                                </div>
-                                <div className='col-md-6 text-left'>
-                                    <h3>{product.name}</h3>
-                                    <p>{product.stock ? 'In Stock' : 'Out of Stock'}</p>
-                                </div>
-                                <div className='col-md-2'>
-                                    <p>{product.weight}</p>
-                                </div>
-                                <div className='col-md-2'>
-                                    <p>${product.price}</p>
+                        return (
+                            <div className='col-md-6' key={product.id} style={{ borderTop: '1px dashed #ccc' }}>
+                                <div className='row mt-5' >
+                                    <div className='col-md-2'>
+                                        <ImageComponent src={secTitle} alt='Title' classAtribute='' />
+                                    </div>
+                                    <div className='col-md-6 text-left'>
+                                        <h3>{product.name}</h3>
+                                        <p>{product.stock ? 'In Stock' : 'Out of Stock'}</p>
+                                    </div>
+                                    <div className='col-md-2'>
+                                        <p>{product.weight}</p>
+                                    </div>
+                                    <div className='col-md-2'>
+                                        <p>${product.price}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    )})}
+                        )
+                    })}
                 </div>
+            </div>
+            <div className='mt-3'>
+                <FooterComponents />
             </div>
 
 

@@ -1081,7 +1081,7 @@ const CheckoutPage = () => {
                         <div className='text-right'>
                             {/* <h6>Congrats, you'r eligible for Free <i className="fas fa-truck"></i> <br />Shipping</h6>
                             <p className='mt-3'>Your personal data will be used to process your order, support your experience throughout this website, and for other purposes described in our <a className="ml-1" href='#'>privacy policy</a></p> */}
-                            <button class="checkout-button mt-4" onClick={handleSubmit}>Place Order</button>
+                            <button className="checkout-button mt-4" onClick={handleSubmit}>Place Order</button>
                         </div>
                     </div>
 
