@@ -102,11 +102,32 @@ function HomeScreen() {
 
         ],
     };
+    const aboutData = [
+        {
+            "iconClass": "fa fa-box",
+            "title": "Home Delivery Available",
+            "description": "We ship to every state in the US"
+        },
+        {
+            "iconClass": "fa fa-user-secret",
+            "title": "Trusted and Quality Service",
+            "description": "Operating for 40 years"
+        },
+        {
+            "iconClass": "fa fa-user-secret",
+            "title": "Exclusive Meat Cuts",
+            "description": "Get access to our most exclusive cuts and rare finds"
+        },
+        {
+            "iconClass": "fa fa-user-secret",
+            "title": "Loyalty Rewards Program",
+            "description": "Automatically reorder any product any time"
+        }
+    ]
+
     const [selectedCategory, setSelectedCategory] = useState(productsData?.Lamb);
 
-    useEffect(() => {
-        console.log("==", selectedCategory)
-    })
+    
 
 
     const settings = {
@@ -135,13 +156,24 @@ function HomeScreen() {
         setSelectedCategory(selectData)
     }
     const gotoShopScreen = (data) => {
-          navigate(`/Shop`, {
+        navigate(`/Shop`, {
             state: {
                 categoryId: data?.id
             }
-          })
+        })
     }
 
+    function Card({ iconClass, title, description }) {
+        return (
+            <div className="card-custom ">
+                <div className="icon-container d-flex align-items-center justify-content-center">
+                    <i className={iconClass} style={{ fontSize: 35 }}></i>
+                </div>
+                <h4 className="card-title">{title}</h4>
+                <p className="card-description">{description}</p>
+            </div>
+        );
+    }
     return (
         <div className="">
             <div className="row" style={{ margin: 0 }}>
@@ -151,44 +183,19 @@ function HomeScreen() {
 
             </div>
             <div className='container'>
-                <div className='mt-5' style={{ backgroundColor: '#86a393', borderRadius: 5 }}>
-                    <div className="row p-5" style={{ margin: 0 }}>
-                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i className="fa fa-box" style={{ fontSize: '30px', color: 'white' }} />
+                <div className='mt-5 feature-cards' style={{ backgroundColor: '#86a393', borderRadius: 5 }}>
+                    <div className="row p-5">
+                        {aboutData?.map((x) => {
+                            return (
+                                <div className="col-md-6 col-lg-3 col-xs-12 ">
+                                    <Card
+                                        iconClass={x?.iconClass}
+                                        title={x?.title}
+                                        description={x?.description}
+                                    />
                                 </div>
-                                <h4 className="text-white heading-Vast-Shadow">Home Delivery Available</h4>
-                                <p className="text-white">We ship to every state in the US</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
-                                </div>
-                                <h4 className="text-white heading-Vast-Shadow">Trusted and Quality Service</h4>
-                                <p className="text-white">Operating for 40 years</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
-                                </div>
-                                <h4 className="text-white heading-Vast-Shadow">Exclusive Meat Cuts</h4>
-                                <p className="text-white">Get access to our most exclusive cuts and rare finds</p>
-                            </div>
-                        </div>
-                        <div className="col-md-3 text-center " style={{ overflowX: 'auto', padding: '25px', margin: '0 auto' }}>
-                            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                                <div style={{ width: '80px', height: '80px', borderRadius: '50%', backgroundColor: 'lightblue', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '15px' }}>
-                                    <i className="fa fa-user-secret" aria-hidden="true"></i>
-                                </div>
-                                <h4 className="text-white heading-Vast-Shadow">Loyalty Rewards Program</h4>
-                                <p className="text-white">Automatically reorder any product any time</p>
-                            </div>
-                        </div>
+                            )
+                        })}
                     </div>
                 </div>
                 <div className="" style={{ marginTop: 30 }}>
@@ -239,7 +246,7 @@ function HomeScreen() {
                                     className='img-fluid'
                                     style={{ maxWidth: '100%', height: 'auto' }}
                                 />
-                                <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: '1',marginLeft: '80px'  }}>
+                                <div className="position-absolute top-50 start-50 translate-middle" style={{ zIndex: '1', marginLeft: '80px' }}>
                                     <img
                                         src={rightSide}
                                         alt='Right Image'
@@ -267,13 +274,13 @@ function HomeScreen() {
                     </div>
                     <div className='row mt-5'>
                         {banners.map((image, index) => (
-                            <div key={index} className='col-md-6 col-lg-3 text-center md-margin-top'>
+                            <div key={index} className='col-md-6 col-lg-3 text-center md-margin-top mt-md-4">'>
                                 <img src={image?.src} alt={image?.alt} className='img-fluid rounded-circle' style={{ width: '200px', height: '200px' }} />
                                 <h3 className='mt-5 heading-Vast-Shadow'>{image?.label}</h3>
-                                <p>{image?.content}</p>
-                                <div className="brown_button mt-3" >
-                                    {image?.button_label}
-                                </div>
+                                <p>{image?.content}</p>                    
+                                <button className={`custom-btn rounded-btn mb-3`} >
+                                 {image?.button_label} <span className="ml-2"><i className="fa fa-arrow-right" aria-hidden="true"></i></span>
+                                </button>
                             </div>
                         ))}
                     </div>
@@ -335,7 +342,7 @@ function HomeScreen() {
                                 <div className='col-md-6 col-lg-6' key={product.id} style={{ borderTop: '1px dashed #ccc' }}>
                                     <div className='row mt-5 heading-center-align'>
                                         <div className='col-xs-12 col-md-12 col-lg-3'>
-                                                <ImageComponent src={secTitle} alt='Title' classAtribute='' />
+                                            <ImageComponent src={secTitle} alt='Title' classAtribute='' />
                                         </div>
                                         <div className='col-xs-12 col-md-12 col-lg-5 md-margin-top'>
                                             <h3>{product.name}</h3>
