@@ -26,10 +26,10 @@ function Header() {
                       <Link to="#">home</Link>
                     </li>
                     <li className="mega-drop-down">
-                      <a href="#">
+                      {/* <a href="#">
                         shop <i className="fa fa-angle-down"></i>
-                      </a>
-
+                      </a> */}
+                    <Link to="/Shop">shop</Link>
 
                     </li>
   
