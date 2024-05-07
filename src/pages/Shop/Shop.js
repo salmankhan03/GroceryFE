@@ -12,7 +12,7 @@ import CustomPagination from '../../components/PaginationComponents/Pagination';
 import { setBrandList } from '../../redux/action/brand-action';
 import Banner from "../../components/Banner";
 import { useLocation } from 'react-router-dom';
-
+import InfiniteScroll from "react-infinite-scroll-component";
 function ShopScreen() {
     const location = useLocation();
     const categoryId = location.state?.categoryId;
@@ -46,9 +46,9 @@ function ShopScreen() {
 
 
     useEffect(() => {
-        getProductsList(selectedOption)
-     
-    }, [selectedOption,currentPage])
+        // getProductsList(selectedOption)
+
+    }, [selectedOption, currentPage])
 
     useEffect(() => {
         const categoryIds = parseInt(categoryId, 10);
@@ -65,7 +65,7 @@ function ShopScreen() {
         { id: 7, name: 'outofstock' }
     ]);
     useEffect(() => {
-        getProductsList()
+        // getProductsList()
         getCategoryList()
         getBrandList()
         getPriceFilter()
@@ -88,7 +88,8 @@ function ShopScreen() {
             ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
         }
         // (selectedCategories.length > 0 || selectedBrands.length > 0) && filteredPrice !== null
-        if (data?.brands?.length > 0 || data?.category?.length > 0 || data?.price[1] !== 0) {
+        console.log("Mydata", data)
+        if (data?.brands?.length > 0 || data?.category?.length > 0 || (data?.price[1] !== 0 && data?.price[1] !== maxPrice)) {
             getfilterWiseProduct(data)
             setProductsListData([])
         } else {
@@ -96,7 +97,7 @@ function ShopScreen() {
             getProductsList()
         }
 
-    }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption])
+    }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption, selectedOption])
     function getBrandList() {
         CategoryServices.getAllBrand({
             page: page,
@@ -161,18 +162,32 @@ function ShopScreen() {
 
 
     }
-    async function getProductsList(limit) {
+    async function getProductsList(limit,pages) {
         console.log(limit)
+        console.log(pages)
+
         await ProductServices.getAllProducts({
-            page: currentPage ? currentPage : page,
-            limit: limit ? limit : defaultLimit,
+            page: pages,
+            limit: 9,
         }).then((resp) => {
             if (resp?.status_code === 200) {
                 dispatch(setProductList({
                     ...resp?.list?.data
                 }))
                 setProductDisplayLimit(resp?.list?.per_page)
-                setProductsListData(resp?.list?.data)
+                // setProductsListData(resp?.list?.data)
+                console.log("pages",pages)
+                console.log("currentPage",currentPage)
+                    if(productsListData?.length > 0 && pages !== 1){
+                        let updatedData =  [...productsListData, ...resp?.list?.data]
+                            console.log("updatedData",updatedData)
+                        let uniqueData = updatedData.filter((obj, index, self) =>
+                            index === self.findIndex((t) => t.id === obj.id && t.name === obj.name));
+                        setProductsListData(uniqueData);
+                    }else{
+                        setProductsListData(resp?.list?.data)
+                    }
+
                 setTotalPages(resp?.list?.last_page)
                 setTotalItems(resp?.list?.total)
                 setTimeout(() => {
@@ -204,6 +219,17 @@ function ShopScreen() {
         setSelectedSortingOption(e.target.value);
     };
 
+    const fetchMoreData = () => {
+        console.log("Get Data");
+        // setCurrentPage(currentPage + 1)
+        console.log(currentPage)
+
+        setTimeout(() => {
+            getProductsList(9,currentPage + 1)
+            setCurrentPage(currentPage + 1)
+        }, 1500);
+    };
+
     return (
         <div>
             <Banner />
@@ -227,62 +253,73 @@ function ShopScreen() {
                             </div>
                         </div>
                         <div className="col-md-9 mt-2">
-                            <div className="row mb-5">
-                                <div className="col-md-6 col-xs-4 mt-1">
-                                    <div>
-                                        Showing all {productsListData?.length} results
-                                        <span className='ml-2'>
+                            <div id="scrollableDiv" style={{ height: 1500, overflowX: 'hidden' }}>
+                                <InfiniteScroll
+                                    dataLength={productsListData ? productsListData?.length:20}
+                                    next={fetchMoreData}
+                                    hasMore={true}
+                                    // loader={<h4>Loading...</h4>}
+                                    scrollThreshold={0.5}
+                                    scrollableTarget="scrollableDiv"
+                                >
+                                    <div className="row mb-5">
+                                        <div className="col-md-6 col-xs-4 mt-1">
+                                            <div>
+                                                Showing all {productsListData?.length} results
+                                                <span className='ml-2'>
+                                                    <select
+                                                        id="simpleDropdown"
+                                                        value={selectedOption}
+                                                        onChange={handleChange}
+                                                        className='select-dropdown'
+                                                    ><option defaultValue={20} >20</option>
+                                                        <option value="12">12</option>
+                                                        <option value="24">24</option>
+                                                        <option value="36">36</option>
+                                                    </select>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
                                             <select
-                                                id="simpleDropdown"
-                                                value={selectedOption}
-                                                onChange={handleChange}
+                                                id="sortingDropdown"
+                                                value={selectedSortingOption}
+                                                onChange={handleSortingChange}
                                                 className='select-dropdown'
-                                            ><option defaultValue={20} >20</option>
-                                                <option value="12">12</option>
-                                                <option value="24">24</option>
-                                                <option value="36">36</option>
-                                            </select>
-                                        </span>
-                                    </div>
-                                </div>
-                                <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
-                                    <select
-                                        id="sortingDropdown"
-                                        value={selectedSortingOption}
-                                        onChange={handleSortingChange}
-                                        className='select-dropdown'
-                                    >
-                                        {/* <option value="default-sorting">Default sorting</option> */}
-                                        <option value="low">Sort by price: low to high</option>
-                                        <option value="high">Sort by price: high to low</option>
-                                        {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
+                                            >
+                                                {/* <option value="default-sorting">Default sorting</option> */}
+                                                <option value="low">Sort by price: low to high</option>
+                                                <option value="high">Sort by price: high to low</option>
+                                                {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
                                     <option value="date-added-desc">Sort by Date Added (Desc)</option> */}
-                                        {/* <option value="sort-by-latest">Sort by latest</option> */}
-                                    </select>
-                                </div>
-                            </div>
-                            <div className="row m-1">
-                                {loading ? (
-                                    <div>
-                                        <Loading skNumber={15} />
+                                                {/* <option value="sort-by-latest">Sort by latest</option> */}
+                                            </select>
+                                        </div>
                                     </div>
-                                ) : (
-                                    productsListData?.length > 0 ? (
-                                        <>
-                                            {productsListData.map((item, index) => (
-                                                <div className="col-lg-4 col-md-4 col-sm-6 mt-3" key={index} data-aos="zoom-in">
-                                                    <ProductListing productItem={item} />
+                                    <div className="row m-1">
+                                        {loading ? (
+                                            <div>
+                                                <Loading skNumber={15} />
+                                            </div>
+                                        ) : (
+                                            productsListData?.length > 0 ? (
+
+                                                <div className='row'>
+                                                    {productsListData.map((i, index) => (
+                                                        <div key={index} className="col-lg-4 col-md-6 col-sm-6 mt-3" data-aos="zoom-in">
+                                                            <ProductListing productItem={i} />
+                                                        </div>
+                                                    ))}
                                                 </div>
 
-                                            ))}
-                                            <div className='row text-center'>
-                                                <CustomPagination totalItems={totalItems} itemsPerPage={productDisplayLimit} onPageChange={handlePageChange} currentPages={currentPage} />
-                                            </div>
-                                        </>
-                                    ) : (
-                                        <NotFound title="Sorry, There are no Products right now." />
-                                    )
-                                )}
+
+
+                                            ) : (
+                                                <NotFound title="Sorry, There are no Products right now." />
+                                            )
+                                        )}
+                                    </div>
+                                </InfiniteScroll>
                             </div>
                         </div>
                     </div>
