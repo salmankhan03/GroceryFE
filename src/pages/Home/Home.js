@@ -177,7 +177,7 @@ function HomeScreen() {
     return (
         <div className="">
             <div className="row" style={{ margin: 0 }}>
-                <div className="col-md-12 " style={{ overflowX: 'auto', padding: 0 }}>
+                <div className="col-md-12" style={{ overflowX: 'auto', padding: 0 }}>
                     <SliderComponents banners={slider} />
                 </div>
 

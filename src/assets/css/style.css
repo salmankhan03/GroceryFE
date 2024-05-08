@@ -1048,6 +1048,21 @@ section {
 .banner_category a:hover {
   color: #b5aec4;
 }
+.carousel-control-prev-icon{
+  background-image: none;
+}
+.carousel-control-next-icon{
+  background-image: none;
+}
+
+.custom-caption{
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
 
 /*********************************
 5. New Arrivals

@@ -273,6 +273,9 @@
   .md-margin-top{
     margin-top: 2rem !important;
   }
+  .slider-image {
+    width: 150% !important;
+  }
 }
 /************
 10. 767px
@@ -388,6 +391,15 @@
   }
   .cart-checkout-btn{
     width: 100% !important;
+  }
+  .slider-image {
+    width: 260% !important;
+  }
+  .carousel-item p{
+    font-size: 20px;
+  }
+  .carousel-item h1{
+    font-size: 50px;
   }
 }
 
