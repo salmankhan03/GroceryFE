@@ -3016,3 +3016,31 @@ input:-webkit-autofill:active{
   color: #ffffff; 
 }
 /* End CUSTOM BTN */
+/* Load More BTN */
+/* Add this CSS to your stylesheet or component */
+
+.load-more-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px; /* Adjust margin as needed */
+}
+
+.load-more-button {
+  padding: 10px 20px;
+  background-color: #fe4c50; /* Button color */
+  color: #fff; /* Text color */
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.load-more-button:hover {
+  background-color: #af5d5f; /* Hover color */
+}
+
+@media (max-width: 768px) {
+  .load-more-container {
+    margin-top: 10px;
+  }
+}

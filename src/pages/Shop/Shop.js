@@ -94,7 +94,7 @@ function ShopScreen() {
             setProductsListData([])
         } else {
             setProductsListData([])
-            getProductsList()
+            getProductsList(9,1)
         }
 
     }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption, selectedOption])
@@ -232,8 +232,9 @@ function ShopScreen() {
 
     return (
         <div>
-            <Banner />
             <div className="custom-header" >
+            <Banner />
+
                 <div className="">
                     <div className="row mt-3" style={{}}>
                         <div className="col-md-3 sidebar_hide mt-2">

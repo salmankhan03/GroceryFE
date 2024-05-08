@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 
-const ListComponents = ({ data, selectedData, handleDataChange,datatypes }) => {
+const ListComponents = ({ data, selectedData, handleDataChange, datatypes }) => {
   const [expandedItems, setExpandedItems] = useState([]);
+  const [visibleRecords, setVisibleRecords] = useState(5); // Initially show 5 records
 
   const handleToggleExpand = (itemId) => {
     setExpandedItems((prevExpanded) => {
@@ -11,6 +12,10 @@ const ListComponents = ({ data, selectedData, handleDataChange,datatypes }) => {
         return [...prevExpanded, itemId];
       }
     });
+  };
+
+  const handleLoadMore = () => {
+    setVisibleRecords((prevVisible) => prevVisible + 5); // Increase visible records by 5
   };
 
   const renderCategory = (category) => {
@@ -37,16 +42,24 @@ const ListComponents = ({ data, selectedData, handleDataChange,datatypes }) => {
         </div>
         {category?.children && isExpanded && (
           <div className='margin-left'>
-            {category?.children.map((child) => renderCategory(child))}
+            {category?.children.slice(0, visibleRecords).map((child) => renderCategory(child))}
           </div>
         )}
       </div>
     );
   };
 
+  const initialRender = data?.slice(0, visibleRecords).map((category) => renderCategory(category));
+
   return (
     <div className="product-category-sidebar">
-      {data?.map((category) => renderCategory(category))}
+      {initialRender}
+      <div className="load-more-container">
+        {data?.length > visibleRecords && (
+          <button className="load-more-button" onClick={handleLoadMore}>Load More</button>
+        )}
+      </div>
+
     </div>
   );
 };
