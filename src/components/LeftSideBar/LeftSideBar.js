@@ -5,8 +5,13 @@ import PriceFilter from '../PriceFilterComponents/PriceFilterComponents';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import RangeSliderInput from '../PriceFilterComponents/PriceFilterComponents';
-function LeftSideBarComponents({ categoriesData, brandData, availabilityData, selectedCategories, setSelectedCategories, selectedBrands, setSelectedBrands, filteredPrice, setFilteredPrice, maximumPrice}) {
+import InputComponent from '../InputComponents/InputComponents';
+function LeftSideBarComponents({ categoriesData, brandData, availabilityData, selectedCategories, setSelectedCategories, selectedBrands, setSelectedBrands, filteredPrice, setFilteredPrice, maximumPrice }) {
   const [priceRange, setPriceRange] = useState([0, maximumPrice]);
+  const [categorySearchTerm, setCategorySearchTerm] = useState('');
+  const [brandSearchTerm, setBrandSearchTerm] = useState('');
+
+
   const handleDataChange = (event,) => {
     const dataType = event.target.dataset.datatype; // Access the 'datatypes' attribute
     console.log("types ==>", dataType)
@@ -25,24 +30,57 @@ function LeftSideBarComponents({ categoriesData, brandData, availabilityData, se
       setSelectedBrands(updatedBrand);
     }
   };
+  const filteredCategories = categoriesData?.filter(category =>
+    category.name.toLowerCase().includes(categorySearchTerm.toLowerCase())
+  );
+  const filteredBrands = brandData?.filter(category =>
+    category.name.toLowerCase().includes(brandSearchTerm.toLowerCase())
+  );
 
-
-
-  const handleButtonClick = () => {
-    // Your button click logic here
-    console.log('Button clicked!');
+  const handleSearchCategory = (event) => {
+    console.log(event)
+    setCategorySearchTerm(event.target.value);
+  };
+  const handleSearchBrand = (event) => {
+    console.log(event)
+    setBrandSearchTerm(event.target.value);
+  };
+  const handleClearSearch = () => {
+    setCategorySearchTerm('');
+  };
+  const handleClearBrand  = () => {
+    setBrandSearchTerm('');
   };
   return (
     <div >
       <div className="m-3">
         <h4>Product Categories</h4>
         <div className='mt-4'>
-          <ListComponents
-            data={categoriesData}
-            selectedData={selectedCategories}
-            handleDataChange={handleDataChange}
-            datatypes="Category"
-          />
+          <div className='mb-3 position-relative '>
+            <InputComponent
+              type="text"
+              id="searchCategories"
+              customClass={`form-control gray-bg `}
+              value={categorySearchTerm}
+              onChange={handleSearchCategory}
+              placeholder="Search categories..."
+            />
+            {categorySearchTerm && (
+              <div className="position-absolute top-0 end-0 translate-middle-y"
+                style={{marginTop:20,marginRight:10}}
+                onClick={handleClearSearch}>
+                <i className="fas fa-times"></i>
+              </div>
+            )}
+          </div>
+          <div className='mt-3' style={{ height: 250, overflow: 'auto' }}>
+            <ListComponents
+              data={filteredCategories}
+              selectedData={selectedCategories}
+              handleDataChange={handleDataChange}
+              datatypes="Category"
+            />
+          </div>
         </div>
       </div>
       <div className='mt-5 m-3'>
@@ -54,12 +92,31 @@ function LeftSideBarComponents({ categoriesData, brandData, availabilityData, se
       <div className="mt-5 m-3">
         <h4>Brands</h4>
         <div className='mt-4'>
-          <ListComponents
-            data={brandData}
-            selectedData={selectedBrands}
-            handleDataChange={handleDataChange}
-            datatypes="Brand"
-          />
+          <div className='mb-3 position-relative'>
+            <InputComponent
+              type="text"
+              id="searchCategories"
+              customClass={`form-control gray-bg`}
+              value={brandSearchTerm}
+              onChange={handleSearchBrand}
+              placeholder="Search Brands..."
+            />
+             {brandSearchTerm && (
+              <div className="position-absolute top-0 end-0 translate-middle-y"
+                style={{marginTop:20,marginRight:10}}
+                onClick={handleClearBrand}>
+                <i className="fas fa-times"></i>
+              </div>
+            )}
+          </div>
+          <div className='mt-3' style={{ height: 250, overflow: 'auto' }}>
+            <ListComponents
+              data={filteredBrands}
+              selectedData={selectedBrands}
+              handleDataChange={handleDataChange}
+              datatypes="Brand"
+            />
+          </div>
         </div>
       </div>
       {/*  <div className="mt-2">
@@ -71,7 +128,7 @@ function LeftSideBarComponents({ categoriesData, brandData, availabilityData, se
                 />
             </div> */}
 
-    </div>
+    </div >
   );
 }
 export default LeftSideBarComponents;
