@@ -1,93 +1,156 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from "react-router-dom";
 import ImageComponent from '../ImageComponents/ImageComponents';
 import logo from "../../assets/images/logo.png"
 import { useSelector } from 'react-redux';
-import './HeaderComponents.css'; 
+import './HeaderComponents.css';
+import styled from "styled-components";
+import { FaBars } from "react-icons/fa";
+
+const StyledHeader = styled.header`
+  background-color: #fff  ;
+  width: 100%;
+  padding: 10px 12px 8px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative; /* Ensure the position context for absolute positioning */
+  .nav_logo {
+    padding: 0 12px;
+    .nav-logo-link {
+      text-decoration: none;
+      font-size: 24px;
+      color: #fab005;
+      font-weight: bold;
+    }
+  }
+  .menuToggleBtn {
+    display: none;
+    color: #000000;
+    font-size: 24px;
+    position: absolute;
+    right: 20px;
+    top: 25px;
+    cursor: pointer;
+    z-index: 999; /* Ensure the toggle button is above other elements */
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: column;
+    align-items: flex-start;
+    .menuToggleBtn {
+      display: block;
+    }
+    ul{
+      padding-left:0px !important
+    }
+  }
+`;
+const NavManu = styled.ul`
+  list-style: none;
+  display: flex;
+
+  li {
+    &:hover {
+      cursor: pointer;
+      background: #d94945;
+      border-radius: 4px;
+    }
+    @media screen and (max-width: 768px) {
+      border-bottom: 1px solid #ccc; /* Add bottom border */
+      width: 100%;
+      padding-left:0px !important;
+      padding-right:0px !important;
+    }
+  }
+  .nav-menu-list {
+    text-decoration: none;
+    color: #000000;
+    display: block;
+    padding: 10px 10px;
+    font-size: 18px;
+  }
+  .nav-menu-list {
+    &:hover {
+      color: #fff;
+    }
+  }
+  @media screen and (max-width: 768px) {
+    display: ${(props) => (props.isToggleOpen ? "flex" : "none")};
+    flex-direction: column;
+    align-items: flex-start;
+    width: 70%;
+    // margin-top: 5px;
+    position: absolute;
+    top: 74px;
+    left: 0;
+    background-color: #fff;
+    z-index: 998;
+  }
+`;
 
 
 function Header() {
+  const [isToggleOpen, setIsToggleOpen] = useState(false);
+
   const cartItems = useSelector(state => state.CartReducer.cartItems);
   const authData = useSelector(state => state?.AuthReducer?.userData);
-    return (
-        <div className="custom-header">
-            <div className="ml-2 mr-2">
-            <div className="row">
-              <div className="col-lg-12 text-right">
-                <div className="logo_container">
-                  <Link to="/">
-                    {/* Fashion<span>Cube</span> */}
-                    <ImageComponent src={logo} alt="LOGO" />
-                  </Link>
-                </div>
-                <nav className="navbar">
-                  <ul className="navbar_menu">
-                    <li>
-                      <Link to="#">home</Link>
-                    </li>
-                    <li className="mega-drop-down">
-                      {/* <a href="#">
-                        shop <i className="fa fa-angle-down"></i>
-                      </a> */}
-                    <Link to="/Shop">shop</Link>
-
-                    </li>
-  
-                    <li>
-                      <a href="#">contact</a>
-                    </li>
-                  </ul>
-                 
-                  <ul className="navbar_user">
-                    <li>
-                      <a href="#">
-                        <i className="fa fa-search" aria-hidden="true"></i>
-                      </a>
-                    </li>
-                    {authData && authData?.id ? (
-                    <li>
-                      <Link to="/userProfile">
-                        <i className="fa fa-user" aria-hidden="true"></i>
-                      </Link>
-                    </li>
-                    ):null}
-                    <li className="checkout">
-                      <Link to="/cart">
-                        <i className="fas fa-shopping-bag"></i>
-                        {cartItems.length !== undefined && cartItems.length > 0 && (
-                          <span id="checkout_items" className="checkout_items">
-                            {cartItems.length}
-                          </span>
-                        )}
-
-                      </Link>
-                    </li>
-                  </ul>
-                  <div
-                    className="hamburger_container"
-                    // onClick={() => this.handleMenuClicked()}
-                  >
-                    <i className="fa fa-bars" aria-hidden="true"></i>
-                  </div>
-                </nav>
-              </div>
-            </div>
-          </div>
-          {/* <MediaQuery query={device.max.tabletL}>
-            <MobileMenu
-              activeClass={this.state.activeclass}
-              onClose={() => this.handleMenuClicked()}
-            />
-          </MediaQuery>
-          {this.state.modalShow ? (
-            <HomeCartView
-              cart={cart}
-              show={this.state.modalShow}
-              onHide={() => this.showHideModal()}
-            />
-          ) : null} */}
+  const handleToggleOpen = () => {
+    setIsToggleOpen(!isToggleOpen);
+  };
+  return (
+    <>
+      <StyledHeader>
+        <div className="nav_logo">
+          <Link to="/">
+            <ImageComponent src={logo} alt="LOGO" />
+          </Link>
         </div>
-      );
+        <NavManu isToggleOpen={isToggleOpen}>
+          <li style={{paddingLeft:15,paddingRight:15}}>
+            <Link to={"/"} className="nav-menu-list">
+              Home
+            </Link>
+          </li>
+          <li style={{paddingLeft:15,paddingRight:15}}>
+            <Link to={"/Shop"} className="nav-menu-list">
+              Shop
+            </Link>
+          </li>
+          <li style={{paddingLeft:15,paddingRight:35}}>
+            <Link to={'#'} className="nav-menu-list">
+              Contact
+            </Link>
+          </li>
+
+          <li>
+            <a href="#" className="nav-menu-list">
+              <i className="fa fa-search" aria-hidden="true"></i>
+            </a>
+          </li>
+          {authData && authData?.id ? (
+            <li>
+              <Link to="/userProfile" className="nav-menu-list">
+                <i className="fa fa-user" aria-hidden="true"></i>
+              </Link>
+            </li>
+          ) : null}
+          <li className="checkout">
+            <Link to="/cart" className="nav-menu-list">
+              <i className="fas fa-shopping-bag"></i>
+              {cartItems.length !== undefined && cartItems.length > 0 && (
+                <span id="checkout_items" className="checkout_items">
+                  {cartItems.length}
+                </span>
+              )}
+
+            </Link>
+          </li>
+        </NavManu>
+        <FaBars className="menuToggleBtn" onClick={handleToggleOpen} />
+      </StyledHeader>
+    </>
+  );
 }
 
 export default Header;
