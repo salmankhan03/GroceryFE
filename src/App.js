@@ -43,10 +43,11 @@ function App() {
     <div className='pagebox'>
       <Router>
         <Routes>
-        <Route path="/" 
+        <Route path="/" element={<WithNavbar component={HomeScreen} />} />
+        <Route path="/Login" 
         element={<WithNavbar component={LoginScreen} />}/>
 
-          <Route path="/Home" element={<WithNavbar component={HomeScreen} />} />
+         
           <Route path="/Shop" element={<WithNavbar component={ShopScreen} />} />
 
           <Route path="/products-details/:id" element={<WithNavbar component={ProductDetails} />} />
