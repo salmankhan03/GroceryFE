@@ -58,9 +58,10 @@ const NavManu = styled.ul`
     }
     @media screen and (max-width: 768px) {
       border-bottom: 1px solid #ccc; /* Add bottom border */
-      width: 100%;
-      padding-left:0px !important;
+      width: 90%;
+      margin-left:20px !important;
       padding-right:0px !important;
+      padding:10px
     }
   }
   .nav-menu-list {
@@ -102,23 +103,23 @@ function Header() {
     <>
       <StyledHeader>
         <div className="nav_logo">
-          <Link to="/">
+          <Link to="/" onClick={handleToggleOpen}>
             <ImageComponent src={logo} alt="LOGO" />
           </Link>
         </div>
         <NavManu isToggleOpen={isToggleOpen}>
           <li style={{paddingLeft:15,paddingRight:15}}>
-            <Link to={"/"} className="nav-menu-list">
+            <Link to={"/"} className="nav-menu-list" onClick={handleToggleOpen}>
               Home
             </Link>
           </li>
           <li style={{paddingLeft:15,paddingRight:15}}>
-            <Link to={"/Shop"} className="nav-menu-list">
+            <Link to={"/Shop"} className="nav-menu-list" onClick={handleToggleOpen}>
               Shop
             </Link>
           </li>
           <li style={{paddingLeft:15,paddingRight:35}}>
-            <Link to={'#'} className="nav-menu-list">
+            <Link to={'#'} className="nav-menu-list" onClick={handleToggleOpen}>
               Contact
             </Link>
           </li>
@@ -130,13 +131,13 @@ function Header() {
           </li>
           {authData && authData?.id ? (
             <li>
-              <Link to="/userProfile" className="nav-menu-list">
+              <Link to="/userProfile" className="nav-menu-list" onClick={handleToggleOpen}>
                 <i className="fa fa-user" aria-hidden="true"></i>
               </Link>
             </li>
           ) : null}
           <li className="checkout">
-            <Link to="/cart" className="nav-menu-list">
+            <Link to="/cart" className="nav-menu-list" onClick={handleToggleOpen}>
               <i className="fas fa-shopping-bag"></i>
               {cartItems.length !== undefined && cartItems.length > 0 && (
                 <span id="checkout_items" className="checkout_items">
