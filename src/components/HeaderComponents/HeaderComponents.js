@@ -114,12 +114,22 @@ function Header() {
             </Link>
           </li>
           <li style={{paddingLeft:15,paddingRight:15}}>
+            <Link to={"/aboutUs"} className="nav-menu-list" onClick={handleToggleOpen}>
+              About Us
+            </Link>
+          </li>
+          <li style={{paddingLeft:15,paddingRight:15}}>
             <Link to={"/Shop"} className="nav-menu-list" onClick={handleToggleOpen}>
               Shop
             </Link>
           </li>
+          <li style={{paddingLeft:15,paddingRight:15}}>
+            <Link to={"/faq"} className="nav-menu-list" onClick={handleToggleOpen}>
+              Faq
+            </Link>
+          </li>
           <li style={{paddingLeft:15,paddingRight:35}}>
-            <Link to={'#'} className="nav-menu-list" onClick={handleToggleOpen}>
+            <Link to={'/contactUs'} className="nav-menu-list" onClick={handleToggleOpen}>
               Contact
             </Link>
           </li>

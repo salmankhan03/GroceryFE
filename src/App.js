@@ -18,6 +18,9 @@ import { useSelector } from 'react-redux';
 import UserProfile from './pages/UserProfile/UserProfile';
 import MainScreen from './pages/Shop/Shop';
 import ShopScreen from './pages/Shop/Shop';
+import AboutUs from './pages/About/AboutUs';
+import Faq from './pages/Faq/Faq';
+import Contact from './pages/Contact/Contact';
 
 function App() {
   const AuthData = useSelector(state => state.AuthReducer.userData);
@@ -46,9 +49,12 @@ function App() {
         <Route path="/" element={<WithNavbar component={HomeScreen} />} />
         <Route path="/Login" 
         element={<WithNavbar component={LoginScreen} />}/>
-
-         
+          <Route path="/aboutUs" element={<WithNavbar component={AboutUs} />} />
           <Route path="/Shop" element={<WithNavbar component={ShopScreen} />} />
+          <Route path="/faq" element={<WithNavbar component={Faq} />} />
+          <Route path="/contactUs" element={<WithNavbar component={Contact} />} />
+
+
 
           <Route path="/products-details/:id" element={<WithNavbar component={ProductDetails} />} />
           <Route path="/signup" element={<SignUp />} />

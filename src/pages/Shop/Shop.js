@@ -13,6 +13,7 @@ import { setBrandList } from '../../redux/action/brand-action';
 import Banner from "../../components/Banner";
 import { useLocation } from 'react-router-dom';
 import InfiniteScroll from "react-infinite-scroll-component";
+import shopBanner from "../../assets/images/banner/shopBanner.jpg"
 function ShopScreen() {
     const location = useLocation();
     const categoryId = location.state?.categoryId;
@@ -232,10 +233,9 @@ function ShopScreen() {
 
     return (
         <div>
-            <div className="custom-header" >
-            <Banner />
-
-                <div className="">
+            <div className="" >
+            <Banner images={shopBanner} content={"SHOP"}/>
+                <div className="custom-header">
                     <div className="row mt-3" style={{}}>
                         <div className="col-md-3 sidebar_hide mt-2">
                             <div className='m-2'>

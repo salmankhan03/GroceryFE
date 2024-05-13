@@ -13,3 +13,11 @@
     padding-right: 0px!important;
     padding-left: 0px!important;
 }
+.banner-container {
+    overflow-x: hidden; /* Hide horizontal scrollbar */
+}
+
+.banner-image {
+    max-width: 100%; /* Ensure image doesn't exceed its container */
+    height: auto; /* Maintain aspect ratio */
+}

@@ -352,6 +352,17 @@
   .sm-margin-top{
     margin-top: 2rem !important;
   }
+  .bannerTitle{
+    text-align: center;
+    color: #fff;
+    margin: 0 0 119px;
+    font-size: 40px !important;
+    position: relative;
+    font-family: "Vast Shadow", serif;
+    font-weight: 400;
+    font-style: normal;
+}
+
 
 }
 
