@@ -8,26 +8,26 @@ import NotFound from '../../components/NotFoundComponents/NotFoundComponents';
 import Loading from '../../components/LoadingComponents/LoadingComponents';
 import CategoryServices from '../../services/categoryService';
 import { setCategoryList } from '../../redux/action/category-action';
-import CustomPagination from '../../components/PaginationComponents/Pagination';
 import { setBrandList } from '../../redux/action/brand-action';
 import Banner from "../../components/Banner";
 import { useLocation } from 'react-router-dom';
 import InfiniteScroll from "react-infinite-scroll-component";
-import shopBanner from "../../assets/images/banner/shopBanner.jpg"
+import shopBanner from "../../assets/images/banner/shopBanner.jpg";
+
 function ShopScreen() {
     const location = useLocation();
     const categoryId = location.state?.categoryId;
     const dispatch = useDispatch();
-    const [loading, setLoading] = useState(true)
-    const [page, setPage] = useState(1)
-    const [defaultLimit, setDefaultLimit] = useState(20)
-    const [productDisplayLimit, setProductDisplayLimit] = useState()
-    const [totalPages, setTotalPages] = useState()
-    const [totalItems, setTotalItems] = useState()
-    const [category, setCategory] = useState("")
-    const [searchText, setSearchText] = useState("")
-    const [sortedField, setSortedField] = useState("")
-    const [productsListData, setProductsListData] = useState();
+    const [loading, setLoading] = useState(true);
+    const [page, setPage] = useState(1);
+    const [defaultLimit] = useState(20);
+    const [productDisplayLimit, setProductDisplayLimit] = useState();
+    const [totalPages, setTotalPages] = useState();
+    const [totalItems, setTotalItems] = useState();
+    const [category, setCategory] = useState("");
+    const [searchText, setSearchText] = useState("");
+    const [sortedField, setSortedField] = useState("");
+    const [productsListData, setProductsListData] = useState([]);
     const [categoriesData, setCategoriesData] = useState();
     const [brandData, setBrandData] = useState();
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -36,20 +36,11 @@ function ShopScreen() {
     const [currentPage, setCurrentPage] = useState(1);
     const [selectedOption, setSelectedOption] = useState();
     const [selectedSortingOption, setSelectedSortingOption] = useState();
-    const [maxPrice, setMaxPrice] = useState()
-
-
+    const [maxPrice, setMaxPrice] = useState();
 
     const handlePageChange = (newPage) => {
-        // Your logic to fetch and display data for the new page
         setCurrentPage(newPage);
     };
-
-
-    useEffect(() => {
-        // getProductsList(selectedOption)
-
-    }, [selectedOption, currentPage])
 
     useEffect(() => {
         const categoryIds = parseInt(categoryId, 10);
@@ -57,21 +48,21 @@ function ShopScreen() {
             ? [...selectedCategories, categoryIds]
             : selectedCategories.filter(id => id !== categoryIds);
         setSelectedCategories(updatedCategories);
-    }, [categoryId])
+    }, [categoryId]);
 
-    const [availabilityData, setAvailabilityData] = useState([
+    const [availabilityData] = useState([
         { id: 4, name: 'exclude-from-catalog' },
         { id: 5, name: 'exclude-from-search' },
         { id: 6, name: 'featured' },
         { id: 7, name: 'outofstock' }
     ]);
-    useEffect(() => {
-        // getProductsList()
-        getCategoryList()
-        getBrandList()
-        getPriceFilter()
 
-    }, [])
+    useEffect(() => {
+        getCategoryList();
+        getBrandList();
+        getPriceFilter();
+    }, []);
+
     useEffect(() => {
         const getselectedBrands = brandData?.filter(brand => selectedBrands.includes(brand.id));
         const selectedBrandNames = getselectedBrands?.map(brand => brand.name);
@@ -82,42 +73,33 @@ function ShopScreen() {
         let data = {
             "category": selectedCategories,
             "brands": selectedBrandNames,
-            // "price": filteredPrice[1] === null || filteredPrice[1] === undefined ? [0, JSON.parse(maxPrice)] :filteredPrice ,
             "price": filteredPrice[1] === null || filteredPrice[1] === undefined
                 ? [0, maxPrice !== undefined ? JSON.parse(maxPrice) : 1000]
                 : filteredPrice,
             ...(Object.keys(obj).length !== 0 && { sort: obj.sort }),
         }
-        // (selectedCategories.length > 0 || selectedBrands.length > 0) && filteredPrice !== null
-        console.log("Mydata", data)
         if (data?.brands?.length > 0 || data?.category?.length > 0 || (data?.price[1] !== 0 && data?.price[1] !== maxPrice)) {
-            getfilterWiseProduct(data)
-            setProductsListData([])
+            getfilterWiseProduct(data);
+            setProductsListData([]);
         } else {
-            setProductsListData([])
-            getProductsList(9,1)
+            setProductsListData([]);
+            getProductsList(9, 1);
         }
 
-    }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption, selectedOption])
+    }, [selectedCategories, selectedBrands, filteredPrice, selectedSortingOption, selectedOption]);
+
     function getBrandList() {
         CategoryServices.getAllBrand({
             page: page,
             limit: defaultLimit,
         }).then((resp) => {
-            // setLoading(false)
-            console.log(resp)
             if (resp?.status_code === 200) {
-                console.log(resp.list.data)
-                dispatch(setBrandList([
-                    ...resp?.list?.data
-                ]))
-                setBrandData(resp?.list?.data)
+                dispatch(setBrandList([...resp?.list?.data]));
+                setBrandData(resp?.list?.data);
             }
         }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
-
+            console.log(error);
+        });
     }
 
     function getCategoryList() {
@@ -125,48 +107,34 @@ function ShopScreen() {
             page: page,
             limit: defaultLimit,
         }).then((resp) => {
-            // setLoading(false)
-            console.log(resp)
             if (resp?.status_code === 200) {
-                dispatch(setCategoryList([
-                    ...resp?.tree?.data
-                ]))
-                setCategoriesData(resp?.tree?.data)
+                dispatch(setCategoryList([...resp?.tree?.data]));
+                setCategoriesData(resp?.tree?.data);
             }
         }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
+            console.log(error);
+        });
     }
+
     async function getfilterWiseProduct(data) {
-        setLoading(true)
+        setLoading(true);
         await ProductServices.getfilterWiseProducts(data).then((resp) => {
             if (resp?.status_code === 200) {
-                console.log(resp)
-                // dispatch(setProductList({
-                //     ...resp?.list?.data
-                // }))
-                setProductsListData(resp?.list)
-                setTotalItems(resp?.list?.length)
-                setProductDisplayLimit(resp?.list?.length)
-                setCurrentPage(1)
+                setProductsListData(resp?.list);
+                setTotalItems(resp?.list?.length);
+                setProductDisplayLimit(resp?.list?.length);
+                setCurrentPage(1);
                 setTimeout(() => {
-                    setLoading(false)
+                    setLoading(false);
                 }, 1000);
             }
-            // setLoading(false)
-
         }).catch((error) => {
-            setLoading(false)
-            console.log(error)
-        })
-
-
+            setLoading(false);
+            console.log(error);
+        });
     }
-    async function getProductsList(limit,pages) {
-        console.log(limit)
-        console.log(pages)
 
+    async function getProductsList(limit, pages) {
         await ProductServices.getAllProducts({
             page: pages,
             limit: 9,
@@ -174,155 +142,143 @@ function ShopScreen() {
             if (resp?.status_code === 200) {
                 dispatch(setProductList({
                     ...resp?.list?.data
-                }))
-                setProductDisplayLimit(resp?.list?.per_page)
-                // setProductsListData(resp?.list?.data)
-                console.log("pages",pages)
-                console.log("currentPage",currentPage)
-                    if(productsListData?.length > 0 && pages !== 1){
-                        let updatedData =  [...productsListData, ...resp?.list?.data]
-                            console.log("updatedData",updatedData)
-                        let uniqueData = updatedData.filter((obj, index, self) =>
-                            index === self.findIndex((t) => t.id === obj.id && t.name === obj.name));
-                        setProductsListData(uniqueData);
-                    }else{
-                        setProductsListData(resp?.list?.data)
-                    }
+                }));
+                setProductDisplayLimit(resp?.list?.per_page);
+                if (productsListData?.length > 0 && pages !== 1) {
+                    let updatedData = [...productsListData, ...resp?.list?.data];
+                    let uniqueData = updatedData.filter((obj, index, self) =>
+                        index === self.findIndex((t) => t.id === obj.id && t.name === obj.name));
+                    setProductsListData(uniqueData);
+                } else {
+                    setProductsListData(resp?.list?.data);
+                }
 
-                setTotalPages(resp?.list?.last_page)
-                setTotalItems(resp?.list?.total)
+                setTotalPages(resp?.list?.last_page);
+                setTotalItems(resp?.list?.total);
                 setTimeout(() => {
-                    setLoading(false)
+                    setLoading(false);
                 }, 1000);
             }
         }).catch((error) => {
-            setLoading(false)
-            console.log(error)
-        })
+            setLoading(false);
+            console.log(error);
+        });
     }
+
     function getPriceFilter() {
         ProductServices.getMaximumPrice().then((resp) => {
-            // setLoading(false)
             if (resp?.status_code === 200) {
-                const roundedMaxPrice = Math.ceil(parseFloat(resp?.max_price))
-                setMaxPrice(roundedMaxPrice)
+                const roundedMaxPrice = Math.ceil(parseFloat(resp?.max_price));
+                setMaxPrice(roundedMaxPrice);
             }
         }).catch((error) => {
-            // setLoading(false)
-            console.log(error)
-        })
+            console.log(error);
+        });
     }
+
     const handleChange = (e) => {
         setSelectedOption(e.target.value);
-        setCurrentPage(1)
+        setCurrentPage(1);
     };
+
     const handleSortingChange = (e) => {
         setSelectedSortingOption(e.target.value);
     };
 
     const fetchMoreData = () => {
-        console.log("Get Data");
-        // setCurrentPage(currentPage + 1)
-        console.log(currentPage)
-
-        setTimeout(() => {
-            getProductsList(9,currentPage + 1)
-            setCurrentPage(currentPage + 1)
-        }, 1500);
+        console.log("selectedBrands", selectedBrands)
+        console.log("selectedCategories", selectedCategories)
+        console.log("selectedSortingOption", selectedSortingOption)
+        if (selectedBrands.length === 0 && selectedCategories.length === 0  && selectedSortingOption === undefined) {
+            setTimeout(() => {
+                getProductsList(9, currentPage + 1);
+                setCurrentPage(currentPage + 1);
+            }, 1500);
+        }
     };
 
     return (
         <div>
-            <div className="" >
-            <Banner images={shopBanner} content={"SHOP"}/>
-                <div className="custom-header">
-                    <div className="row mt-3" style={{}}>
-                        <div className="col-md-3 sidebar_hide mt-2">
-                            <div className='m-2'>
-                                <LeftSideBarComponents
-                                    categoriesData={categoriesData}
-                                    brandData={brandData}
-                                    availabilityData={availabilityData}
-                                    selectedCategories={selectedCategories}
-                                    setSelectedCategories={setSelectedCategories}
-                                    selectedBrands={selectedBrands}
-                                    setSelectedBrands={setSelectedBrands}
-                                    filteredPrice={filteredPrice}
-                                    setFilteredPrice={setFilteredPrice}
-                                    maximumPrice={maxPrice}
-                                />
-                            </div>
+            <Banner images={shopBanner} content={"SHOP"} />
+            <div className="custom-header">
+                <div className="row mt-3">
+                    <div className="col-md-3 sidebar_hide mt-2">
+                        <div className='m-2'>
+                            <LeftSideBarComponents
+                                categoriesData={categoriesData}
+                                brandData={brandData}
+                                availabilityData={availabilityData}
+                                selectedCategories={selectedCategories}
+                                setSelectedCategories={setSelectedCategories}
+                                selectedBrands={selectedBrands}
+                                setSelectedBrands={setSelectedBrands}
+                                filteredPrice={filteredPrice}
+                                setFilteredPrice={setFilteredPrice}
+                                maximumPrice={maxPrice}
+                            />
                         </div>
-                        <div className="col-md-9 mt-2">
-                            <div id="scrollableDiv" style={{ height: 1500, overflowX: 'hidden' }}>
-                                <InfiniteScroll
-                                    dataLength={productsListData ? productsListData?.length:20}
-                                    next={fetchMoreData}
-                                    hasMore={true}
-                                    // loader={<h4>Loading...</h4>}
-                                    scrollThreshold={0.5}
-                                    scrollableTarget="scrollableDiv"
+                    </div>
+                    <div className="col-md-9 mt-2">
+                        <div className="row mb-5">
+                            <div className="col-md-6 col-xs-4 mt-1">
+                                <div>
+                                    Showing all {productsListData?.length} results
+                                    <span className='ml-2'>
+                                        <select
+                                            id="simpleDropdown"
+                                            value={selectedOption}
+                                            onChange={handleChange}
+                                            className='select-dropdown'
+                                        >
+                                            <option defaultValue={20} >20</option>
+                                            <option value="12">12</option>
+                                            <option value="24">24</option>
+                                            <option value="36">36</option>
+                                        </select>
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
+                                <select
+                                    id="sortingDropdown"
+                                    value={selectedSortingOption}
+                                    onChange={handleSortingChange}
+                                    className='select-dropdown'
                                 >
-                                    <div className="row mb-5">
-                                        <div className="col-md-6 col-xs-4 mt-1">
-                                            <div>
-                                                Showing all {productsListData?.length} results
-                                                <span className='ml-2'>
-                                                    <select
-                                                        id="simpleDropdown"
-                                                        value={selectedOption}
-                                                        onChange={handleChange}
-                                                        className='select-dropdown'
-                                                    ><option defaultValue={20} >20</option>
-                                                        <option value="12">12</option>
-                                                        <option value="24">24</option>
-                                                        <option value="36">36</option>
-                                                    </select>
-                                                </span>
-                                            </div>
-                                        </div>
-                                        <div className="col-md-6 col-8 mt-1 text-right text-center-sm">
-                                            <select
-                                                id="sortingDropdown"
-                                                value={selectedSortingOption}
-                                                onChange={handleSortingChange}
-                                                className='select-dropdown'
-                                            >
-                                                {/* <option value="default-sorting">Default sorting</option> */}
-                                                <option value="low">Sort by price: low to high</option>
-                                                <option value="high">Sort by price: high to low</option>
-                                                {/* <option value="date-added-asc">Sort by Date Added (Asc)</option>
-                                    <option value="date-added-desc">Sort by Date Added (Desc)</option> */}
-                                                {/* <option value="sort-by-latest">Sort by latest</option> */}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div className="row m-1">
-                                        {loading ? (
-                                            <div>
-                                                <Loading skNumber={15} />
-                                            </div>
-                                        ) : (
-                                            productsListData?.length > 0 ? (
-
-                                                <div className='row'>
-                                                    {productsListData.map((i, index) => (
-                                                        <div key={index} className="col-lg-4 col-md-6 col-sm-6 mt-3" data-aos="zoom-in">
-                                                            <ProductListing productItem={i} />
-                                                        </div>
-                                                    ))}
-                                                </div>
-
-
-
-                                            ) : (
-                                                <NotFound title="Sorry, There are no Products right now." />
-                                            )
-                                        )}
-                                    </div>
-                                </InfiniteScroll>
+                                    <option value="low">Sort by price: low to high</option>
+                                    <option value="high">Sort by price: high to low</option>
+                                </select>
                             </div>
                         </div>
+                        <InfiniteScroll
+                            dataLength={productsListData.length}
+                            next={fetchMoreData}
+                            hasMore={currentPage < totalPages}
+                            // loader={<Loading skNumber={5} />}
+                            endMessage={
+                                <p style={{ textAlign: 'center' }}>
+                                    <b>Yay! You have seen it all</b>
+                                </p>
+                            }
+                        >
+                            <div className="row m-1">
+                                {loading ? (
+                                    <Loading skNumber={15} />
+                                ) : (
+                                    productsListData?.length > 0 ? (
+                                        <div className='row'>
+                                            {productsListData.map((i, index) => (
+                                                <div key={index} className="col-lg-4 col-md-6 col-sm-6 mt-3" data-aos="zoom-in">
+                                                    <ProductListing productItem={i} />
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <NotFound title="Sorry, There are no Products right now." />
+                                    )
+                                )}
+                            </div>
+                        </InfiniteScroll>
                     </div>
                 </div>
             </div>
