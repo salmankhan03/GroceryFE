@@ -72,7 +72,7 @@ const RangeSliderInput = ({ min, max, values, filteredPrice, setFilteredPrice })
                                 type="number"
                                 id=""
                                 label=""
-                                customClass={`form-control gray-bg `}
+                                customClass={`form-control gray-bg text-black`}
                                 value={price[0]}
                                 onChange={(e) => customHandleInputChange(e.target.value, "min")}
                                 placeholder="MinPrice"
@@ -89,7 +89,7 @@ const RangeSliderInput = ({ min, max, values, filteredPrice, setFilteredPrice })
                                 type="number"
                                 id="maxPrice"
                                 label=""
-                                customClass={`form-control gray-bg `}
+                                customClass={`form-control gray-bg text-black`}
                                 value={price[1]}
                                 onChange={(e) => customHandleInputChange(e.target.value, "max")}
                                 placeholder="MaxPrice"
