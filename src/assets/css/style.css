@@ -3027,7 +3027,7 @@ input:-webkit-autofill:active{
 }
 
 .load-more-button {
-  padding: 10px 20px;
+  padding: 5px 10px;
   background-color: #fe4c50; /* Button color */
   color: #fff; /* Text color */
   border: none;
