@@ -109,7 +109,7 @@ function Header() {
         </div>
         <NavManu isToggleOpen={isToggleOpen}>
           <li style={{paddingLeft:15,paddingRight:15}}>
-            <Link to={"/"} className="nav-menu-list" onClick={handleToggleOpen}>
+            <Link to={"/home"} className="nav-menu-list" onClick={handleToggleOpen}>
               Home
             </Link>
           </li>
